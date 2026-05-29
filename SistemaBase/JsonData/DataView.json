@@ -1,0 +1,109 @@
+{
+  "ViewName": "Persona",
+  "FormUrl": "/prueba",
+  "Method": "POST",
+  "Tipo": "A",
+  "Windows": {
+    "Superior": {
+      "Fila":[ {
+        "Title": null,
+        "Elements": [
+          [
+          {
+          "ColClass": "col-10",
+          "Col":
+          [
+          
+             [
+               "Input",
+               "col-2",
+               {
+                "name": "inputCodigo",
+                "id": "inputCodigo",
+                "labelName": "Código",
+                "labelClass": "form-label",
+                "class": "form-control",
+                "tipo": "Normal",
+                "options": null
+              }
+            ],
+            [
+              "Input",
+              "col-10",
+              {
+                "name": "inputNombre",
+                "id": "inputNombre",
+                "labelName": "Apellido y Nombres",
+                "labelClass": "form-label",
+                "class": "form-control",
+                "tipo": "Normal",
+                "options": null
+
+              }
+            ]
+          ]
+        },
+        {
+          "ColClass": "col-2",
+          "Col":
+          [
+             [
+            "Input",
+            "col-2",
+            {
+              "name": "inputTipoPersona",
+              "id": "inputTipoPersona",
+              "labelName": "Tipo de Persona",
+              "labelClass": "form-label",
+              "class": "form-control",
+              "tipo": "Checkbox",
+              "options": [{
+                "label": "Física",
+                "value": "Física"
+              },
+              {
+                "label": "Jurídica",
+                "value": "Jurídica"
+              }  ]
+            }
+            ]
+          ]
+
+       }
+          ],
+          [
+
+            {
+              "ColClass": "col-12",
+              "Col":
+              [
+                 [
+                "Input",
+                "",
+                {
+                  "name": "inputNombre",
+                  "id": "inputNombre",
+                  "labelName": "Nombre fantasía",
+                  "labelClass": "form-label",
+                  "class": "form-control",
+                  "tipo": "Normal",
+                  "options":null
+                }
+                ]
+              ]
+    
+                }
+
+          ]
+        ]
+        }
+      ]
+        
+      },
+
+      "Izquierdad": {}
+    },
+    "Inferior": {}
+  }
+
+

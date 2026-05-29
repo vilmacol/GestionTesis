@@ -1,0 +1,243 @@
+@model IEnumerable<SistemaBase.Models.Forma>
+
+     @{
+      List<string> columns =  new List<string>();
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.IdModulo)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.NomForma)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.Descripcion)+"\""); 
+                                      columns.Add("\""+Html.DisplayNameFor(model => model.IdModuloNavigation)+"\""); 
+     if (ViewData["Show"] != null)
+     {
+         Layout = "";
+    }
+    }
+        @{
+        ViewData["Title"] = "Index";
+        }
+        
+        
+       @if (ViewData["Show"] == null) {
+        <p>
+            <a class="d-none" id="detailsview" type="button" data-bs-toggle="modal" data-bs-target="#detailsModal"></a>
+        </p>                             
+        <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
+                         <div data-list='{"valueNames":[@string.Join(",", columns) ],"page":16}'>
+                 <div class="row align-items-end justify-content-between pb-5 g-3">
+                     <div class="col-auto">
+                         <h3> Forma</h3>
+                          <button class="btnAbm  mt-3" onclick="modalcreate()">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span> Nuevo
+                        </button>
+                     </div>
+                     <div class="col-12 col-md-auto">
+                         <div class="row g-2 gy-3">
+                             <div class="col-auto flex-1">
+                                 <div class="search-box">
+                                     <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                                         <input class="form-control search-input search form-control-sm" type="search" placeholder="Buscar" aria-label="Search" />
+                                         <span class="fas fa-search search-box-icon"></span>
+                                     </form>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+                <div id="listbody">
+                <div class="table-responsive mx-n1 px-1Latest" >
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="white-space-nowrap fs--1 ps-0 align-middle text-center col-1 pt-2 pb-2 pl-2"></th>
+                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.NomForma))"> @Html.DisplayNameFor(model => model.NomForma)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.Descripcion)"> @Html.DisplayNameFor(model => model.Descripcion)</th>
+                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.IdModuloNavigation))"> @Html.DisplayNameFor(model => model.IdModuloNavigation)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @foreach (var item in Model) {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                    <td class="fs--1 align-middle ps-0 text-center col-1 pt-2 pb-2 pl-2">
+                                        <button class="btnAbm" onclick="modaledit('@item.IdModulo', '@item.NomForma')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btnAbm" onclick="modaldelete('@item.IdModulo', '@item.NomForma')"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                       <td class="@Html.DisplayNameFor(modelItem => item.NomForma) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.NomForma)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Descripcion)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.IdModuloNavigation) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.IdModuloNavigation.IdModulo)</td>
+                            </tr>
+                                                                        }
+                        </tbody>
+                    </table>
+                 </div>
+                    </div>
+                 <div class="row align-items-center py-1">
+                     <div class="pagination d-none"></div>
+                     <div class="col d-flex fs--1">
+                        <p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p><a class="fw-semi-bold" href="#!" data-list-view="*">Ver Todos<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!" data-list-view="less">Ver menos</a>
+                     </div>
+                     <div class="col-auto d-flex">
+                         <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previa</button>
+                         <button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Siguiente<span class="fas fa-chevron-right ms-2"></span></button>
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="details"></div>
+        <script>
+    const editsubmit = (IdModulo,NomForma) => {
+    e.preventDefault();
+    const form = document.getElementById( "Forma" + "FormEdit" );
+    const formData = new FormData(form);
+    axios({
+    method: "post",
+    url: "Forma"+"" + `/Edit`,
+    data: formData,
+    headers: {
+    "Content-Type": "multipart/form-data",
+    'X-Response-View': 'Json'
+    }
+    })
+    .then(function (response) {
+    document.getElementById("listbody").innerHTML = response.data;
+    document.getElementById("editmodal").click();
+    })
+    .catch(function (response) {
+    console.log(response);
+    });
+    };
+    const modalcreate = () => {
+    axios({
+    baseURL: "Forma"+"" + "/Create" ,
+    method: 'Get',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Response-View': 'Json'
+    }
+    }).then(response => {
+    document.getElementById("details").innerHTML = response.data;
+    document.getElementById("detailsview").click();
+    });
+    };
+    const modaledit = (IdModulo,NomForma) => {
+    axios({
+    baseURL: "Forma"+"" + "/Edit?" +`IdModulo=${IdModulo}&NomForma=${NomForma}`,
+    method: 'Get',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Response-View': 'Json'
+    }
+    }).then(response => {
+    document.getElementById("details").innerHTML = response.data;
+    document.getElementById("detailsview").click();
+    });
+    };
+    const modaldetails = (IdModulo,NomForma) => {
+    axios({
+    baseURL: "Forma"+"" + "/Details?" +`IdModulo=${IdModulo}&NomForma=${NomForma}`,
+    method: 'Get',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Response-View': 'Json'
+    }
+    }).then(response => {
+    document.getElementById("details").innerHTML = response.data;
+    document.getElementById("detailsview").click();
+    });
+    };
+    const modaldelete = (IdModulo,NomForma) => {
+    axios({
+    baseURL: "Forma"+"" + "/Delete?" +`IdModulo=${IdModulo}&NomForma=${NomForma}`,
+    method: 'Get',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Response-View': 'Json'
+    }
+    }).then(response => {
+    document.getElementById("details").innerHTML = response.data;
+    document.getElementById("detailsview").click();
+    });
+    };
+    const submitforms = (e, url, id) => {
+        e.preventDefault();
+        document.getElementById("loader_inv").style.visibility = "visible";
+        const form = document.getElementById(id);
+        const formData = new FormData(form);
+        axios({
+        method: "post",
+        url:  "Forma"+"/" + `${url}`,
+        data: formData,
+        headers: {
+        "Content-Type": "multipart/form-data",
+        'X-Response-View': 'Json'
+        }
+        })
+        .then(function (response) {
+        document.getElementById("listbody").innerHTML = response.data;
+        document.getElementById("editmodal").click();
+        document.getElementsByClassName("modal-backdrop fade show")[0].className = "";
+        })
+        .catch(function (response) {
+        console.log(response);
+        }).finally(() => {
+        document.getElementById("loader_inv").style.visibility = "hidden";
+        refrestjsfunction();
+        });
+        };
+const verifyCheckbox = (id) => {
+var checkBox = document.getElementById(id+"_2");
+var text = document.getElementById(id);
+if (checkBox.checked == true){
+text.value = "S";
+} else {
+text.value = "N";
+}
+}
+   const refrestjsfunction = () => {
+    const refreshjs = document.querySelectorAll("script");
+refreshjs.forEach((item) =>
+{
+    var src = item.src;
+    item.remove();
+    var script,
+        scriptTag;
+    script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    scriptTag = document.getElementsByTagName('script')[0];
+    scriptTag.parentNode.insertBefore(script, scriptTag );
+})
+    }
+    </script>
+     }else{
+                <div>
+               <div class="table-responsive mx-n1 px-1Latest" >
+                    <table class="table table-striped fs--1 mb-0 border-top border-200">
+                        <thead>
+                            <tr>
+                                <th class="white-space-nowrap fs--1 ps-0 align-middle"></th>
+                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.NomForma))"> @Html.DisplayNameFor(model => model.NomForma)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.Descripcion)"> @Html.DisplayNameFor(model => model.Descripcion)</th>
+                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.IdModuloNavigation))"> @Html.DisplayNameFor(model => model.IdModuloNavigation)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @foreach (var item in Model) {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                    <td class="fs--1 align-middle ps-0">
+                                        <button class="btnAbm" onclick="modaledit('@item.IdModulo', '@item.NomForma')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btnAbm" onclick="modaldelete('@item.IdModulo', '@item.NomForma')"><i class="fa fa-trash"></i></button>
+                                        <button class="btnAbm" onclick="modaldetails('@item.IdModulo', '@item.NomForma')"><i class="fa fa-arrow-right"></i></button>
+                                    </td>
+                                       <td class="@Html.DisplayNameFor(modelItem => item.NomForma) fs--1 align-middle ps-0"> @Html.DisplayFor(modelItem => item.NomForma)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Descripcion)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.IdModuloNavigation) fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.IdModuloNavigation.IdModulo)</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                 </div>
+                    </div>
+     }

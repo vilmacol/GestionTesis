@@ -1,0 +1,91 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventiva</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="~/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <script>
+        function pagination() {
+            var vars = {};
+            var x = document.location.search.substring(1).split('&');
+
+            for (var i in x) {
+                var z = x[i].split('=', 2);
+                vars[z[0]] = unescape(z[1]);
+            }
+
+            var x = ['frompage', 'topage', 'page', 'webpage', 'section', 'subsection', 'subsubsection'];
+
+            for (var i in x) {
+                var y = document.getElementsByClassName(x[i]);
+
+                for (var j = 0; j < y.length; ++j) {
+                    y[j].textContent = vars[x[i]];
+                }
+            }
+        }
+    </script>
+</head>
+
+<body id="pdf-footer" onload="pagination()">
+
+        <div class="p-2">
+            <div class="">
+                <div style="display: flex; justify-content: space-between;">
+                    <!--<p>Fecha: lunes 06 marzo</p>-->
+                    <span class="page" style="float:right"></span>
+                </div>
+                <!--<p>Impreso por: INV</p>-->
+                    <div style=" display: flex; justify-content: center; margin-left:35%"  >
+                        <img src="http://143.198.56.252/assets/img/icons/logo.png" alt="inventiva logo" style="width:250px; background-color: #224683" />
+                    </div>
+               
+                <!--<h5 style="text-align: center;">Detalle de ventas por articulos</h5>-->
+                <table class="table  table-borderless table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="9"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="1" style="max-width: 30px !important;">Sucursal:</td>
+                            <td colspan="3">TODAS</td>
+                            <td colspan="1" style="max-width: 30px !important;">Artículos:</td>
+                            <td colspan="3">TODOS</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="max-width: 30px !important;">Deposito:</td>
+                            <td colspan="3">TODOS</td>
+                            <td colspan="1" style="max-width: 30px !important;">Vendedor:</td>
+                            <td colspan="3">ADMINISTRADOR (1)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="max-width: 30px !important;">Tipo de Comprobante:</td>
+                            <td colspan="3">TODOS</td>
+                            <td colspan="1" style="max-width: 30px !important;">Cliente:</td>
+                            <td colspan="3">PRUEBA CONTACTO 01 (50871)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="max-width: 30px !important;">Rubro:</td>
+                            <td colspan="3">TODOS</td>
+                            <td colspan="1" style="max-width: 30px !important;">Marca:</td>
+                            <td colspan="3">TODOS</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="max-width: 30px !important;">Periodo:</td>
+                            <td colspan="3">Sin periodo</td>
+                            <td colspan="1" style="max-width: 30px !important;">Grupo Art:</td>
+                            <td colspan="3">TODOS</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        </div>
+                        </div>
+    </body>
+</html>

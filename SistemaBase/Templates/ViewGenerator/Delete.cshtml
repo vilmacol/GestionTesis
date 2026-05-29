@@ -1,0 +1,145 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @Model.ViewDataTypeName
+
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+        @:@@{
+        @:ViewData["Title"] = "@Model.ViewName";
+        //if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        //{
+        //    @:Layout = "@Model.LayoutPageFile";
+        //}
+        @:Layout = "";
+        @:}
+        @:
+
+
+
+
+        @:
+    }
+    else
+    {
+        @:@@{
+        @:Layout = null;
+        @:}
+
+        //    PushIndent("    ");
+    }
+}
+@{
+    @:<div class="modal fade " id="detailsModal" tabindex="-1" aria-labelledby="detailsModallLabel" style="display: none;" aria-modal="true" role="dialog">
+
+        @:<div class="modal-dialog modal-dialog-centered">
+            @:<div class="modal-content">
+                @:<div class="modal-header">
+                    @:<h5 class="modal-title" id="detailsModalLabel"> @Model.ViewDataTypeShortName</h5>
+                    @:<button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close" id="editmodal"><svg class="svg-inline--fa fa-xmark fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs--1"></span> Font Awesome fontawesome.com --></button>
+                @:</div>
+                @:<div class="modal-body">
+
+
+                    @:<div>
+                        @:<div class="text-center">
+                            @:<div>
+                                @:<span class="me-1"><i class="fa fa-warning"></i></span> ¿Esta Seguro que desea Eliminar el registro?
+
+                            @:</div>
+                        @:</div>
+                        @*@:<dl class="row">
+
+                                Dictionary<string, IPropertyMetadata> propertyLookup = ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+                                Dictionary<string, INavigationMetadata> navigationLookup = ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x => x.AssociationPropertyName, x => x);
+
+                                foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+                                {
+                                    if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                                        && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+                                    {
+                                        <dt class="col-sm-5">
+                                            @@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @@Html.DisplayFor(model => model.@GetValueExpression(property))
+                                        </dd>
+                                    }
+                                    else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+                                    {
+                                        <dt class="col-sm-5">
+                                            @@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @@Html.DisplayFor(model => model.@GetValueExpression(navigation).@navigation.DisplayPropertyName)
+                                        </dd>
+                                    }
+                                    else
+                                    {
+                                        <dt class="col-sm-5">
+                                            @@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @@Html.DisplayFor(model => model.@GetValueExpression(property))
+                                        </dd>
+                                    }
+                                }
+                            @:</dl>
+                            @:*@
+                        @:<form asp-action="@Model.ViewName" id="FormModal" onsubmit="submitforms(event,'Delete','FormModal')">
+                            foreach (var property in Model.ModelMetadata.Properties)
+                            {
+                                if (property.IsPrimaryKey)
+                                {
+                                    @:<input type="hidden" asp-for="@GetValueExpression(property)" />
+                                }
+                            }
+
+
+
+                            @:<div class="text-center" id="loader_inv" style="visibility: hidden;">
+                                @:<div class="spinner-border" role="status">
+                                    @:<span class="sr-only"></span>
+                                @:</div>
+                            @:</div>
+                            @:<div class="modal-footer">
+                                @:<div class="text-center">
+                                    @:<button class="btnAbm" type="submit">
+                                        @:<span class="btn-label"><i class="fa fa-trash"></i></span> Eliminar
+
+                                    @:</button>
+                                    @:<button class="btnAbmCancelar" id="closededit" type="button" data-bs-dismiss="modal">
+                                        @:<span class="btn-label"><i class="fa fa-remove"></i></span> Cancelar
+
+                                    @:</button>
+                                @:</div>
+                            @:</div>
+                        @:</form>
+                    @:</div>
+                @:</div>
+            @:</div>
+        @:</div>
+    @:</div>
+    if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+    {
+        //ClearIndent();
+
+    }
+}
+@functions
+{
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+}

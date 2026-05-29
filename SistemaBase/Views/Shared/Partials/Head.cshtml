@@ -1,0 +1,17 @@
+﻿
+
+    <script asp-location="Head" src="/bundles/app.runtime.bundle.js"></script>
+    <script asp-location="Head" src="/bundles/chunk-vendors.runtime.bundle.js"></script>
+    <link asp-src="/bundles/libs.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" asp-src="/assets/custom/style.css">
+
+    <environment include="Production">
+   
+            <link rel="stylesheet" type="text/css" asp-src="/bundles/style.min.css">
+
+    </environment>
+
+    <script asp-location="Footer" asp-src="/theme/script/public.axios.js" asp-order="202"></script>
+    <script asp-location="Footer" asp-src="/assets/custom/script.js" asp-order="901"></script>
+

@@ -1,0 +1,406 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @GetEnumerableTypeExpression(Model.ViewDataTypeName)
+
+@{
+      string name = Model.ViewDataTypeName.Replace("SistemaBase.Models.","");
+
+      var pkNamesCALL = ListKeysCall();
+ 
+      string concatCALL = string.Join(",",  pkNamesCALL);
+       
+      var pkNamesFUNCTION = ListKeysFunctions();
+ 
+      string concatFUNCTION = string.Join("&",  pkNamesFUNCTION);
+
+
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+    @:@@{
+    @:ViewData["Title"] = "@Model.ViewName";
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        {
+    @:Layout = "@Model.LayoutPageFile";
+        }
+    @:}
+    @:
+        //@:<h1>@Model.ViewName</h1>
+    @:
+    }
+    else
+    {
+    @:@@{
+    @:Layout = null;
+    @:}
+    @:
+    @:<!DOCTYPE html>
+    @:
+    @:<html>
+    @:<head>
+    @:<meta name="viewport" content="width=device-width" />
+    @:<title>@Model.ViewName</title>
+    @:</head>
+    @:<body>
+            //    PushIndent("    ");
+        }
+    @:<p>
+            //@:<a asp-action="Create">Create New</a>
+
+    <a class="d-none" id="detailsview" type="button" data-bs-toggle="modal" data-bs-target="#detailsModal"></a>
+    <partial name="_Create" model="new @name@@()" />
+    @:</p>
+
+
+
+
+    @:<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
+    @: <div data-list='{"valueNames":["product","customer","rating","review","time"],"page":16}'>
+    @: <div class="row align-items-end justify-content-between pb-5 g-3">
+    @: <div class="col-auto">
+    @: <h3>Nombre del Formulario</h3>
+    <button class="btnAbm" data-bs-toggle="modal" data-bs-target="#tooltipModal">
+                                <span class="btn-label"><i class="fa fa-plus"></i></span> Nuevo
+    </button>
+                        //@: <p class="text-700 lh-sm mb-0">Payment received across all channels</p>
+    @: </div>
+    @: <div class="col-12 col-md-auto">
+    @: <div class="row g-2 gy-3">
+    @: <div class="col-auto flex-1">
+    @: <div class="search-box">
+    @: <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+    @: <input class="form-control search-input search form-control-sm" type="search" placeholder="Buscar" aria-label="Search" />
+    @: <span class="fas fa-search search-box-icon"></span>
+    @: </form>
+    @: </div>
+    @: </div>
+    @* <div class="col-auto">
+                                //@: <button class="btn btn-sm btn-phoenix-secondary bg-white hover-bg-100 me-2" type="button">All products</button>
+                                //@: <button class="btn btn-sm btn-phoenix-secondary bg-white hover-bg-100" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--2"></span></button>
+                                //@: <ul class="dropdown-menu dropdown-menu-end">
+                                    //@: <li><a class="dropdown-item" href="#">Action</a></li>
+                                    //@: <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    @: <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                @: </ul>
+                            @: </div>*@
+    @: </div>
+    @: </div>
+    @:</div>
+
+
+    @:<div class="table-responsive mx-n1 px-1Latest">
+    @*reviews*@
+    @:<table class="table table-striped fs--1 mb-0 border-top border-200">
+    @:<thead>
+    @:<tr>
+    @:<th class="white-space-nowrap fs--1 ps-0 align-middle"></th>
+
+                                Dictionary<string, IPropertyMetadata> propertyLookup =
+                                    ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+                                Dictionary<string, INavigationMetadata> navigationLookup =
+                                    ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x =>
+                                    x.AssociationPropertyName, x =>
+                                    x);
+
+                                foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+                                {
+                                    if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                                    && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+                                    {
+    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"> @@Html.DisplayNameFor(model => model.@GetValueExpression(property))</th>
+                                    }
+                                    else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+                                    {
+    <th class="sort align-middle"> @@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))</th>
+                                     } else if (!property.IsForeignKey && property.IsPrimaryKey && property.Scaffold){
+    <th class="white-space-nowrap fs--1 ps-0 align-middle"> @@Html.DisplayNameFor(model => model.@GetValueExpression(property))</th> 
+                                    }
+                                }
+    @:</tr>
+    @:</thead>
+
+
+
+    @:<tbody class="list">
+    @:@@foreach (var item in Model) {
+
+    @:<tr class="hover-actions-trigger btn-reveal-trigger position-static">
+
+                                string pkName = GetPrimaryKeyName();
+                                var pkNames = ListKeys();
+                                  if (pkNames != null)
+                                {
+                                 string concat = string.Join(", '@item.", pkNames);
+                                concat = "'@item." + concat;
+        //}
+                               // if (pkName != null)
+                               // {
+    @:<td class="fs--1 align-middle ps-0">
+    @:<button class="btnAbm" onclick="modaledit(@concat)"><i class="fa fa-pencil"></i></button>
+    @:<button class="btnAbm" onclick="modaldelete(@concat)"><i class="fa fa-trash"></i></button>
+    @:<button class="btnAbm" onclick="modaldetails(@concat)"><i class="fa fa-arrow-right"></i></button>
+
+    @:</td>
+                                }
+                                else
+                                {
+    @:<td class="fs--1 align-middle ps-0">
+    @:<button class="btnAbm" onclick="modaledit('@@item.@pkName')"><i class="fa fa-pencil"></i></button>
+    @:<button class="btnAbm" onclick="modaldelete('@@item.@pkName')"><i class="fa fa-trash"></i></button>
+    @:<button class="btnAbm" onclick="modaldetails('@@item.@pkName')"><i class="fa fa-arrow-right"></i></button>
+    @:</td>
+                                }
+
+
+
+
+                                foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+                                {
+                                    if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                                    && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+                                    {
+    <td class="fs--1 align-middle ps-0 "> @@Html.DisplayFor(modelItem => item.@GetValueExpression(property))</td>
+                                    }
+                                    else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+                                    {
+    <td class="fs--1 align-middle ps-0 "> @@Html.DisplayFor(modelItem => item.@GetValueExpression(navigation).@navigation.DisplayPropertyName)</td>
+
+                                    } else if(!property.IsForeignKey && property.IsPrimaryKey && property.Scaffold ) { 
+
+    <td class="fs--1 align-middle ps-0 " > @@Html.DisplayFor(modelItem => item.@GetValueExpression(property))</td>
+                                    }
+                                }
+    @:</tr>
+    @:}
+
+
+
+
+
+
+
+    @:</tbody>
+
+
+    @:</table>
+
+
+    @: </div>
+    @: <div class="row align-items-center py-1">
+    @: <div class="pagination d-none"></div>
+    @: <div class="col d-flex fs--1">
+    @:<p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p><a class="fw-semi-bold" href="#!" data-list-view="*">Ver Todos<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!" data-list-view="less">Ver menos</a>
+    @: </div>
+    @: <div class="col-auto d-flex">
+    @: <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previa</button>
+    @: <button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Siguiente<span class="fas fa-chevron-right ms-2"></span></button>
+    @: </div>
+    @:</div>
+    @:</div>
+    @:</div>
+
+    @:<div id="details"></div>
+    @:<script>
+ 
+
+    @:const editsubmit = (@concatCALL) => {
+    @:e.preventDefault();  
+    @:const form = document.getElementById( "@name" + "FormEdit" );
+    @:const formData = new FormData(form);
+
+    @:axios({
+    @:method: "post",
+    @:url: `@name/Edit`,
+    @:data: formData,
+    @:headers: {
+    @:"Content-Type": "multipart/form-data",
+    @:'X-Response-View': 'Json'
+    @:}
+    @:})
+    @:.then(function (response) {
+                //handle success
+    @:document.getElementById("listbody").innerHTML = response.data;
+    @:document.getElementById("editmodal").click();
+    @:document.getElementById("closededit").click();
+
+    @:})
+    @:.catch(function (response) {
+                //handle error
+    @:console.log(response);
+    @:});
+
+
+    @:};
+
+    
+    
+    @:const modaledit = (@concatCALL) => {
+    @:axios({
+    @:baseURL: "@name"+"s" + "/Edit?" +`@concatFUNCTION`,
+    @:method: 'Get',
+    @:headers: {
+    @:'Accept': 'application/json',
+    @:'Content-Type': 'application/json',
+    @:'X-Response-View': 'Json'
+    @:}
+    @:}).then(response => {
+    @:document.getElementById("details").innerHTML = response.data;
+    @:document.getElementById("detailsview").click();
+
+    @:});
+
+
+    @:};
+
+
+
+    @:const modaldetails = (@concatCALL) => {
+    @:axios({
+    @:baseURL: "@name"+"s" + "/Details?" +`@concatFUNCTION`,
+    @:method: 'Get',
+    @:headers: {
+    @:'Accept': 'application/json',
+    @:'Content-Type': 'application/json',
+    @:'X-Response-View': 'Json'
+    @:}
+    @:}).then(response => {
+    @:document.getElementById("details").innerHTML = response.data;
+    @:document.getElementById("detailsview").click();
+
+    @:});
+
+
+    @:};
+
+
+
+     
+    @:const modaldelete = (@concatCALL) => {
+    @:axios({
+    @:baseURL: "@name"+"s" + "/Delete?" +`@concatFUNCTION`,
+    @:method: 'Get',
+    @:headers: {
+    @:'Accept': 'application/json',
+    @:'Content-Type': 'application/json',
+    @:'X-Response-View': 'Json'
+    @:}
+    @:}).then(response => {
+    @:document.getElementById("details").innerHTML = response.data;
+    @:document.getElementById("detailsview").click();
+
+    @:});
+
+
+    @:};
+
+
+
+
+
+    @:const submitforms = (e, url) => {
+    @:e.preventDefault();  
+    @:const form = document.getElementById("FormModal");
+    @:const formData = new FormData(form);
+    @:axios({
+    @:method: "post",
+    @:url: `@Model.ViewDataTypeName/${url}`,
+    @:data: formData,
+    @:headers: {
+    @:"Content-Type": "multipart/form-data",
+    @:'X-Response-View': 'Json'
+    @:}
+    @:})
+    @:.then(function (response) {
+    @:document.getElementById("listbody").innerHTML = response.data;
+    @:document.getElementById("modalform").click();
+    @:document.getElementById("closededit").click();
+    @:})
+    @:.catch(function (response) {
+    @:console.log(response);
+    @:});
+    @:};
+
+
+
+
+
+    @:</script>
+
+
+        if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+        {
+            //ClearIndent();
+    @:</body>
+    @:</html>
+}
+}
+@functions
+{
+        dynamic  GetPrimaryKeyNames()
+        {
+            //return (Model.ModelMetadata.PrimaryKeys != null && Model.ModelMetadata.PrimaryKeys.Length == 1)
+            //? Model.ModelMetadata.PrimaryKeys[0].PropertyName
+            //: null;
+
+            return Model.ModelMetadata.PrimaryKeys != null ? Model.ModelMetadata.PrimaryKeys : null;
+        }
+        List<string> ListKeys(){
+            var keys = GetPrimaryKeyNames();
+            List<string> strings = new List<string>();
+            if(keys!=null){
+                foreach(var item in keys){
+                    strings.Add(item?.PropertyName+"'");
+                }
+            }
+            return strings;
+        }
+
+        List<string> ListKeysCall(){
+            var keys = GetPrimaryKeyNames();
+            List<string> strings = new List<string>();
+            if(keys!=null){
+                foreach(var item in keys){
+                    strings.Add(item?.PropertyName);
+                }
+            }
+            return strings;
+        }
+
+
+        List<string> ListKeysFunctions(){
+            var keys = GetPrimaryKeyNames();
+            List<string> strings = new List<string>();
+            if(keys!=null){
+                foreach(var item in keys){
+                    strings.Add(item?.PropertyName + "=${" +item?.PropertyName+"}");
+                }
+        }
+        return strings;
+    }
+
+    string GetPrimaryKeyName()
+    {
+        return (Model?.ModelMetadata?.PrimaryKeys != null && Model?.ModelMetadata?.PrimaryKeys?.Length == 1)
+        ? Model?.ModelMetadata?.PrimaryKeys[0]?.PropertyName
+        : null;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+
+    string GetEnumerableTypeExpression(string typeName)
+    {
+        return "IEnumerable<" + typeName + ">";
+    }
+}

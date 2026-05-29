@@ -1,0 +1,98 @@
+@model SistemaBase.Models.Persona
+
+        @{
+        Layout = "";
+        ViewData["Title"] = "Details";
+        }
+        
+        
+<div class="modal fade " id="detailsModal" tabindex="-1" aria-labelledby="detailsModallLabel" style="display: none;" aria-modal="true" role="dialog">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Details Persona</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close" id="editmodal"><svg class="svg-inline--fa fa-xmark fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs--1"></span> Font Awesome fontawesome.com --></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div>
+
+                        <hr />
+                        <dl class="row">
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.IdPersona)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.IdPersona)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.Nombre)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.Nombre)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.Sexo)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.Sexo)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.FecNacimiento)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.FecNacimiento)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.FecAlta)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.FecAlta)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.FecActualizacion)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.FecActualizacion)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.EstadoCivil)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.EstadoCivil)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.Email)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.Email)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.DireccionParticular)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.DireccionParticular)
+                                        </dd>
+                                        <dt class="col-sm-5">
+                                            @Html.DisplayNameFor(model => model.SitioWeb)
+                                        </dt>
+                                        <dd class="col-sm-7">
+                                            @Html.DisplayFor(model => model.SitioWeb)
+                                        </dd>
+                        </dl>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button class="btnAbm" type="button" data-bs-dismiss="modal">
+                            <span class="btn-label"><i class="fa fa-remove"></i></span> Salir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

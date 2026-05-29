@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @RenderSection("styles", required: false)
+
+    <title>@ViewData["Title"] - Gestion Tesis</title>
+
+    <script src="/assets/js/config.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicons/favicon.ico">
+    <link href="~/css/css.css" rel="stylesheet" />
+    <meta name="theme-color" content="#000000">
+
+    <script src="/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/vendors/simplebar/simplebar.min.js"></script>
+    <script src="/assets/js/demo.js"></script>
+
+    <script src="/js/loaderGenerico.js"></script>
+    <script src="/js/Helper.js"></script>
+    <script src="~/js/lottie.min.js"></script>
+
+    <style>
+        nav, .navbar, .navbar-nav {
+            overflow: visible !important;
+        }
+
+        .custom-dropdown {
+            position: absolute !important;
+            right: 0 !important;
+            min-width: 220px !important;
+            white-space: nowrap;
+            z-index: 1050 !important;
+        }
+
+        .arrow-button {
+            position: relative;
+            padding: 10px 20px;
+            background-color: #9f1d2c;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+            .arrow-button::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                width: 10px;
+                height: 10px;
+                background-color: white;
+                clip-path: polygon(0 50%, 100% 0, 100% 100%);
+                transition: transform 0.3s ease;
+            }
+
+            .arrow-button:hover {
+                background-color: #861826;
+            }
+
+                .arrow-button:hover::after {
+                    transform: translateY(-50%) translateX(5px);
+                }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .navbar-vertical-content {
+            width: 100%;
+            background-color: transparent;
+            transition: width 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-nav {
+            width: 100%;
+            overflow: visible;
+        }
+
+        .nav-item {
+            width: 100%;
+        }
+
+        .navbar-vertical-content.expanded {
+            width: 350px;
+        }
+
+        .nav-link-text {
+            white-space: normal;
+            overflow: visible;
+        }
+    </style>
+
+    <link rel="preconnect" href="~/css/fonts.googleapis.css">
+    <link href="~/css/fonts.googleapis.css" rel="stylesheet" />
+
+    <link href="/vendors/simplebar/simplebar.min.css" rel="stylesheet">
+    <link href="/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
+    <link href="/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
+    <link href="/vendors/dropzone/dropzone.min.css" rel="stylesheet">
+    <link href="/vendors/choices/choices.min.css" rel="stylesheet">
+    <link href="/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+    <link href="~/css/global.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/unicons.iconscout.css" rel="stylesheet" />
+</head>
+
+<body>
+ @RenderBody()
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/vendors/popper/popper.min.js"></script>
+    <script src="/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="/vendors/anchorjs/anchor.min.js"></script>
+    <script src="/vendors/is/is.min.js"></script>
+    <script src="/vendors/fontawesome/all.min.js"></script>
+    <script src="/vendors/lodash/lodash.min.js"></script>
+    <script src="~/js/polyfill.min.js"></script>
+    @*<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>*@
+    <script src="/vendors/list.js/list.min.js"></script>
+    <script src="/vendors/feather-icons/feather.min.js"></script>
+    <script src="/vendors/dayjs/dayjs.min.js"></script>
+    <script src="/assets/js/phoenix.js"></script>
+    <script src="/vendors/echarts/echarts.min.js"></script>
+    <script src="/vendors/chart/chart.min.js"></script>
+    <script src="~/js/index.min.js"></script>
+   @* <script src="https://unpkg.com/@@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARdVcREeBK44lIWnv5-iPijKqvlSAVwbw&callback=revenueMapInit"
+            async></script>*@
+    <script src="/assets/js/ecommerce-dashboard.js"></script>
+    <script src="/vendors/dropzone/dropzone.min.js"></script>
+    <script src="/vendors/choices/choices.min.js"></script>
+    <script src="/vendors/tinymce/tinymce.min.js"></script>
+
+    <script src="~/js/axios.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

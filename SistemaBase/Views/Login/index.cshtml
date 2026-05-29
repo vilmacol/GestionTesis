@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "_Layout-Original";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<form class="was-validated" id="FormLogin" onsubmit="ingresar(event)" style="background: #F0F3F4;">
+    <div class="container">
+        <div class="row flex-center min-vh-100 py-5">
+
+            <div class="col-sm-10 col-md-8 col-lg-5 col-xl-5 col-xxl-3" style="background: #6f1420; border-radius: 5px">
+
+                <!-- <a class="d-flex flex-center text-decoration-none mb-4" href="../../../index.html"> -->
+                
+                <!-- </a> -->
+                <div class="text-center mt-4">
+                    <img src="../../../assets/img/logo.png" alt="phoenix" width="200" />
+                </div>
+                
+              
+
+                @*<div class="text-center mt-4">
+                    <img src="../../../assets/img/icons/logo.png" alt="phoenix" width="150" />
+                </div>*@
+
+
+                <div class="mb-3 text-start">
+                    <label class="form-label" for="email" style="color: white !important;">Usuario</label>
+                    <div class="form-icon-container">
+                        <input class="form-control form-icon-input" id="usuario" name="usuario" type="text" placeholder="Usuario" required /><span class="fas fa-user text-900 fs--1 form-icon"></span>
+                    </div>
+
+                    <div class="invalid-tooltip">
+                        Usuario requerido.
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="mb-3 text-start">
+                    <label class="form-label" for="pass" style="color: white !important;">Contraseña</label>
+                    <div class="form-icon-container">
+                        <input class="form-control form-icon-input" name="pass" id="pass" type="password" placeholder="Contraseña" required /><span class="fas fa-key text-900 fs--1 form-icon"></span>
+                    </div>
+
+                    <div class="invalid-tooltip">
+                        Contraseña requerido.
+                    </div>
+
+                </div>
+                @*<div class="row flex-between-center mb-7">
+                        <div class="col-auto">
+                            <div class="form-check mb-0">
+                                <input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" />
+                                <label class="form-check-label mb-0" for="basic-checkbox">Recuérdame</label>
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="text-center mb-5" id="loader_login" style="visibility: hidden;">
+                    <div class="spinner-border" role="status" style="border-right-color: white !important;">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button class="btnAbm mb-4" type="submit" style="width: 80%;">Ingresar</button>
+                </div>
+                <!-- <button class="btn btn-primary w-100 mb-3" type="submit" style="margin-bottom: 20px !important;">Ingresar</button> -->
+                </div>
+            </div>
+        </div>
+</form>
+
+
+<script src="~/assets/js/home.js"></script>
+

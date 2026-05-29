@@ -1,0 +1,231 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @Model.ViewDataTypeName
+
+
+
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+        @:@@{
+        @:ViewData["Title"] = "@Model.ViewName";
+        //if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        //{
+        //    @:Layout = "@Model.LayoutPageFile";
+        //}
+        @:Layout = "";
+        @: string namecheck = "";
+
+        @:}
+        //@:<h1>@Model.ViewName</h1>
+        @:
+    }
+    else
+    {
+        @:@@{
+        @:Layout = null;
+        @:}
+
+        @:
+    }
+
+    @:<div class="modal fade " id="detailsModal" tabindex="-1" aria-labelledby="detailsModallLabel" style="display: none;" aria-modal="true" role="dialog">
+        @:<div class="modal-dialog modal-dialog-centered">
+            @:<div class="modal-content">
+                @:<div class="modal-header">
+                    @:<h5 class="modal-title" id="detailsModalLabel">@Model.ViewDataTypeShortName</h5>
+                    @:<button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close" id="editmodal"><svg class="svg-inline--fa fa-xmark fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs--1"></span> Font Awesome fontawesome.com --></button>
+                @:</div>
+                @:<div class="modal-body">
+
+                    @:<form asp-action="@Model.ViewName" id="FormModal" onsubmit="submitforms(event,'Edit' ,'FormModal')" class="mb-0">
+
+                        @:<div class="row g-0 mt-0 mb-0">
+
+
+                            @:<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            foreach (PropertyMetadata property in Model.ModelMetadata.Properties)
+                            {
+                                if (property.IsPrimaryKey)
+                                {
+                                    @*@:<input type="hidden" asp-for="@property.PropertyName" />*@
+                                    //continue;
+                                }
+
+                                if (property.Scaffold)
+                                {
+                                    if (property.IsReadOnly)
+                                    {
+                                        continue;
+                                    }
+
+                                    if (property.IsForeignKey)
+                                    {
+                                        @:<div class="col-12">
+                                            @:<div class="row">
+                                                @:<div class="col-4">
+                                                    @:<label asp-for="@property.PropertyName" class="form-control-label fs-0 subTitleModal"></label>
+                                                @:</div>
+                                                @:<div class="col-8">
+                                                    @:<select asp-for="@property.PropertyName" class="form-control" asp-items="ViewBag.@property.PropertyName"></select>
+                                                    @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                                                @:</div>
+                                            @:</div>
+                                        @:</div>
+
+                                        continue;
+                                    }
+
+                                    bool isCheckbox = property.TypeName.Equals("System.Boolean");
+                                    if (isCheckbox)
+                                    {
+                                        @:<div class="col-12">
+                                            @:<label class="form-check-label">
+                                                @:<input class="form-check my_checkbox-input" asp-for="@property.PropertyName" /> @@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                                            @:</label>
+                                        @:</div>
+                                    }
+                                    else if (property.IsEnum && !property.IsEnumFlags)
+                                    {
+                                        @:<div class="col-12">
+                                            @:<div class="row">
+                                                @:<div class="col-4">
+                                                    @:<label asp-for="@property.PropertyName" class="form-control-label fs-0 subTitleModal"></label>
+                                                @:</div>
+                                                @:<div class="col-8">
+                                                    @:<select asp-for="@property.PropertyName" class="form-control"></select>
+                                                    @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                                                @:</div>
+                                            @:</div>
+                                        @:</div>
+                                    }
+                                    else if (property.IsMultilineText)
+                                    {
+                                        @:<div class="col-12">
+                                            @:<div class="row">
+                                                @:<div class="col-4">
+                                                    @:<label asp-for="@property.PropertyName" class="form-control-label fs-0 subTitleModal"></label>
+                                                @:</div>
+                                                @:<div class="col-8">
+                                                    @:<textarea asp-for="@property.PropertyName" class="form-control"></textarea>
+                                                    @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                                                @:</div>
+                                            @:</div>
+                                        @:</div>
+                                    }
+                                    else
+                                    {
+                                        @:<div class="col-12">
+                                            @:<div class="row">
+                                                @:<div class="col-4">
+                                                    @:<label class="form-control-label fs-0 subTitleModal text-900" asp-for="@property.PropertyName"></label>
+                                                @:</div>
+
+
+                                                @:<div class="col-8">
+                                                    @*@:<div class="form-control">*@
+                                                    if (@property.PropertyName.Contains("Puede"))
+                                                    {
+
+
+                                                        <input class="form-control" hidden asp-for="@property.PropertyName" id="@property.PropertyName" />
+                                                        @:<div class="form-check fromCheckSelect">
+                                                            @:@@{ namecheck = "@property.PropertyName" + "_2";}
+                                                            @:@@if(@@Model.@property.PropertyName == "S")
+                                                            @:{
+                                                            @:<input class="form-check my_checkbox" type="checkbox" id="@@namecheck" onchange="verifyCheckbox('@property.PropertyName')" checked="checked">
+                                                            @:}
+                                                            @:else
+                                                            @:{
+                                                            @:<input class="form-check my_checkbox" type="checkbox" id="@@namecheck" onchange="verifyCheckbox('@property.PropertyName')" />
+                                                            @:}
+                                                        @:</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        @:<input class="form-control" asp-for="@property.PropertyName" />
+                                                    }
+                                                    @:<span asp-validation-for="@property.PropertyName" class="text-danger k-invalid-msg" data-for="@property.PropertyName"></span>
+                                                    @*@:</div>*@
+                                                @:</div>
+                                            @:</div>
+                                        @:</div>
+                                    }
+                                }
+                                // Ideally we shouldn't be here  but if the user marks the foreign key as [ScaffoldColumn(false)], we want to atleast try to make it work.
+                                else if (property.IsForeignKey)
+                                {
+                                    @:<input type="hidden" asp-for="@property.PropertyName" />
+                                    continue;
+                                }
+                                else
+                                {
+                                    @:<input type="hidden" asp-for="@property.PropertyName" />
+                                    continue;
+                                }
+                            }
+
+
+                            @:<div class="text-center" id="loader_inv" style="visibility: hidden;">
+                                @:<div class="spinner-border" role="status">
+                                    @:<span class="sr-only"></span>
+                                @:</div>
+                            @:</div>
+
+
+
+
+                            @:<div class="modal-footer">
+                                @:<button class="btnAbm" type="submit">
+                                    @:<span class="btn-label"><i class="fa fa-save"></i></span> Guardar
+
+                                @:</button>
+
+
+                                @:<button class="btnAbmCancelar" id="closededit" type="button" data-bs-dismiss="modal">
+                                    @:<span class="btn-label"><i class="fa fa-remove"></i></span> Cancelar
+
+                                @:</button>
+                            @:</div>
+                        @:</div>
+
+                    @:</form>
+
+                @:</div>
+            @:</div>
+        @:</div>
+    @:</div>
+
+}
+
+@{
+    if (Model.ReferenceScriptLibraries)
+    {
+        @:@@section Scripts {
+        @:@@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        @:}
+    }
+    // The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+    if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+    {
+
+    }
+}
+@functions
+{
+    string GetAssociationName(IPropertyMetadata property)
+    {
+        //Todo: Implement properly.
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+}

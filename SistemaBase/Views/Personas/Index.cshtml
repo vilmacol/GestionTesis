@@ -1,0 +1,149 @@
+@model IEnumerable<SistemaBase.Models.Persona>
+
+     @{
+      List<string> columns =  new List<string>();
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.IdPersona)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.Nombre)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.Sexo)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.FecNacimiento)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.FecAlta)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.FecActualizacion)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.EstadoCivil)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.Email)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.DireccionParticular)+"\""); 
+                                        columns.Add("\""+Html.DisplayNameFor(model => model.SitioWeb)+"\""); 
+     if (ViewData["Show"] != null)
+     {
+         Layout = "";
+    }
+    }
+        @{
+        ViewData["Title"] = "Index";
+        }
+        
+        
+       @if (ViewData["Show"] == null) {
+        <p>
+            <a class="d-none" id="detailsview" type="button" data-bs-toggle="modal" data-bs-target="#detailsModal"></a>
+        </p>                             
+        <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
+                         <div data-list='{"valueNames":[@string.Join(",", columns) ],"page":16}'>
+                 <div class="row align-items-end justify-content-between pb-5 g-3">
+                     <div class="col-auto">
+                         <h3> Persona</h3>
+                          <button class="btnAbm  mt-3" onclick="modalcreate()">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span> Nuevo
+                        </button>
+                     </div>
+                     <div class="col-12 col-md-auto">
+                         <div class="row g-2 gy-3">
+                             <div class="col-auto flex-1">
+                                 <div class="search-box">
+                                     <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                                         <input class="form-control search-input search form-control-sm" type="search" placeholder="Buscar" aria-label="Search" />
+                                         <span class="fas fa-search search-box-icon"></span>
+                                     </form>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+                <div id="listbody">
+                <div class="table-responsive mx-n1 px-1Latest" >
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="white-space-nowrap fs--1 ps-0 align-middle text-center col-1 pt-2 pb-2 pl-2"></th>
+                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.IdPersona))"> @Html.DisplayNameFor(model => model.IdPersona)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.Nombre)"> @Html.DisplayNameFor(model => model.Nombre)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.Sexo)"> @Html.DisplayNameFor(model => model.Sexo)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.FecNacimiento)"> @Html.DisplayNameFor(model => model.FecNacimiento)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.FecAlta)"> @Html.DisplayNameFor(model => model.FecAlta)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.FecActualizacion)"> @Html.DisplayNameFor(model => model.FecActualizacion)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.EstadoCivil)"> @Html.DisplayNameFor(model => model.EstadoCivil)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.Email)"> @Html.DisplayNameFor(model => model.Email)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.DireccionParticular)"> @Html.DisplayNameFor(model => model.DireccionParticular)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.SitioWeb)"> @Html.DisplayNameFor(model => model.SitioWeb)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @foreach (var item in Model) {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                    <td class="fs--1 align-middle ps-0 text-center col-1 pt-2 pb-2 pl-2">
+                                        <button class="btnAbm" onclick="modaledit('@item.IdPersona')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btnAbm" onclick="modaldelete('@item.IdPersona')"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                       <td class="@Html.DisplayNameFor(modelItem => item.IdPersona) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.IdPersona)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Nombre)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.Nombre)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Sexo)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.Sexo)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecNacimiento)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.FecNacimiento)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecAlta)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.FecAlta)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecActualizacion)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.FecActualizacion)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.EstadoCivil)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.EstadoCivil)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Email)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.Email)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.DireccionParticular)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.DireccionParticular)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.SitioWeb)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.SitioWeb)</td>
+                            </tr>
+                                                                        }
+                        </tbody>
+                    </table>
+                 </div>
+                    </div>
+                 <div class="row align-items-center py-1">
+                     <div class="pagination d-none"></div>
+                     <div class="col d-flex fs--1">
+                        <p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p><a class="fw-semi-bold" href="#!" data-list-view="*">Ver Todos<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!" data-list-view="less">Ver menos</a>
+                     </div>
+                     <div class="col-auto d-flex">
+                         <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previa</button>
+                         <button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Siguiente<span class="fas fa-chevron-right ms-2"></span></button>
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="details"></div>
+        <script src="~/js/persona.js"></script>
+     }else{
+                <div>
+               <div class="table-responsive mx-n1 px-1Latest" >
+                    <table class="table table-striped fs--1 mb-0 border-top border-200">
+                        <thead>
+                            <tr>
+                                <th class="white-space-nowrap fs--1 ps-0 align-middle"></th>
+                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.IdPersona))"> @Html.DisplayNameFor(model => model.IdPersona)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.Nombre)"> @Html.DisplayNameFor(model => model.Nombre)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.Sexo)"> @Html.DisplayNameFor(model => model.Sexo)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.FecNacimiento)"> @Html.DisplayNameFor(model => model.FecNacimiento)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.FecAlta)"> @Html.DisplayNameFor(model => model.FecAlta)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.FecActualizacion)"> @Html.DisplayNameFor(model => model.FecActualizacion)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.EstadoCivil)"> @Html.DisplayNameFor(model => model.EstadoCivil)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.Email)"> @Html.DisplayNameFor(model => model.Email)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.DireccionParticular)"> @Html.DisplayNameFor(model => model.DireccionParticular)</th>
+                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.SitioWeb)"> @Html.DisplayNameFor(model => model.SitioWeb)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @foreach (var item in Model) {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                    <td class="fs--1 align-middle ps-0">
+                                        <button class="btnAbm" onclick="modaledit('@item.IdPersona')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btnAbm" onclick="modaldelete('@item.IdPersona')"><i class="fa fa-trash"></i></button>
+                                        <button class="btnAbm" onclick="modaldetails('@item.IdPersona')"><i class="fa fa-arrow-right"></i></button>
+                                    </td>
+                                       <td class="@Html.DisplayNameFor(modelItem => item.IdPersona) fs--1 align-middle ps-0"> @Html.DisplayFor(modelItem => item.IdPersona)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Nombre)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.Nombre)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Sexo)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.Sexo)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecNacimiento)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.FecNacimiento)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecAlta)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.FecAlta)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.FecActualizacion)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.FecActualizacion)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.EstadoCivil)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.EstadoCivil)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.Email)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.Email)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.DireccionParticular)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.DireccionParticular)</td>
+                                        <td class="@Html.DisplayNameFor(modelItem => item.SitioWeb)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.SitioWeb)</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                 </div>
+                    </div>
+     }
