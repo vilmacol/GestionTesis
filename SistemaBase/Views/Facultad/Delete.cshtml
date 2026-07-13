@@ -1,0 +1,18 @@
+@model SistemaBase.Models.Facultad
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Eliminar facultad</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <p>Desea desactivar la facultad <strong>@Model.Codigo - @Model.Nombre</strong>?</p>
+    <form asp-action="Delete" asp-route-id="@Model.IdFacultad" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btnEliminar" type="submit"><i class="fa fa-trash"></i> Eliminar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

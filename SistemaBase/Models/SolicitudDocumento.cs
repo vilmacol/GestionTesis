@@ -11,6 +11,8 @@ namespace SistemaBase.Models
         public string NombreArchivo { get; set; } = null!;
         public string RutaArchivo { get; set; } = null!;
         public string Extension { get; set; } = null!;
+        public byte[]? ArchivoContenido { get; set; }
+        public string? ContentType { get; set; }
         public int? TamanoKb { get; set; }
         public DateTime FechaCarga { get; set; }
         public string IdUsuarioCarga { get; set; } = null!;

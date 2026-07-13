@@ -1,0 +1,18 @@
+@model SistemaBase.Models.TipoExtension
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Eliminar extension</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <p class="mt-3">Desea desactivar la extension <strong>@Model.Extension</strong>?</p>
+    <form asp-action="Delete" asp-route-id="@Model.IdTipoExtension" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btnEliminar" type="submit"><i class="fa fa-trash"></i> Desactivar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

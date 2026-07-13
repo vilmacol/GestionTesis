@@ -1,0 +1,22 @@
+@model SistemaBase.Models.CarreraDocumentoRequerido
+
+@{
+    ViewData["Title"] = "Eliminar documento requerido";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Eliminar documento requerido</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <p class="mt-3">
+        Desea desactivar <strong>@Model.IdTipoDocumentoNavigation.Nombre</strong>
+        para la carrera <strong>@Model.IdCarreraNavigation.Descripcion</strong>?
+    </p>
+    <form asp-action="Delete" asp-route-id="@Model.IdCarreraDocumentoRequerido" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btnEliminar" type="submit"><i class="fa fa-trash"></i> Desactivar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

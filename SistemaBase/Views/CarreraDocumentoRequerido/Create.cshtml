@@ -1,0 +1,40 @@
+@model SistemaBase.Models.CarreraDocumentoRequerido
+
+@{
+    ViewData["Title"] = "Nuevo documento requerido";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Nuevo documento requerido</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdCarrera">Carrera</label>
+            <select class="form-select" asp-for="IdCarrera" asp-items="ViewBag.IdCarrera" required>
+                <option value="">Seleccione una carrera</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdTipoDocumento">Tipo de documento</label>
+            <select class="form-select" asp-for="IdTipoDocumento" asp-items="ViewBag.IdTipoDocumento" required>
+                <option value="">Seleccione un documento</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="Obligatorio">Obligatorio</label>
+            <select class="form-select" asp-for="Obligatorio">
+                <option value="true">Si</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Observacion">Observacion</label><textarea class="form-control" asp-for="Observacion" maxlength="250"></textarea></div>
+        <input type="hidden" asp-for="Activo" />
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

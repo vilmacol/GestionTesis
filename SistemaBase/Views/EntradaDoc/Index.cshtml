@@ -1,0 +1,180 @@
+@model SistemaBase.ModelsCustom.EntradaDoc
+
+@{
+    ViewData["Title"] = "Entrada de documentos";
+}
+
+<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-6 pb-6 border-y border-300">
+    <div class="row align-items-end justify-content-between pb-4 g-3">
+        <div class="col-auto">
+            <h3 class="mb-2">Entrada de documentos</h3>
+            <p class="text-700 mb-0">Registro de solicitud de tesis y documentos requeridos.</p>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["Success"]</div>
+    }
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert" asp-validation-summary="All"></div>
+    }
+
+    <form asp-controller="EntradaDoc" asp-action="Registrar" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <div class="row g-4">
+            <div class="col-12 col-xl-6">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Datos del alumno</legend>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" asp-for="NombreAlumno">Nombre</label>
+                        <input class="form-control" asp-for="NombreAlumno" maxlength="100" required />
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold" asp-for="NroDocumento">Documento / CI</label>
+                            <input class="form-control" asp-for="NroDocumento" maxlength="20" required />
+                        </div>
+                       @*  <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold" asp-for="RegistroAcademico">Registro academico</label>
+                            <input class="form-control" asp-for="RegistroAcademico" maxlength="30" />
+                        </div> *@
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold" asp-for="IdCarrera">Carrera</label>
+                        <select class="form-select" asp-for="IdCarrera" asp-items="Model.Carreras" required>
+                            <option value="">Seleccione una carrera</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-3 mt-0">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold" asp-for="Correo">Correo</label>
+                            <input class="form-control" asp-for="Correo" type="email" maxlength="120" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold" asp-for="Telefono">Telefono</label>
+                            <input class="form-control" asp-for="Telefono" maxlength="30" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="col-12 col-xl-6">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Datos de tesis</legend>
+                    <div>
+                        <label class="form-label fw-semibold" asp-for="IdTutor">Tutor</label>
+                        <select class="form-select" asp-for="IdTutor" asp-items="Model.Tutores">
+                            <option value="">Seleccione un tutor</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" asp-for="Tema">Tema</label>
+                        <textarea class="form-control" asp-for="Tema" rows="4" maxlength="500"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" asp-for="ObservacionRecepcion">Observacion de recepcion</label>
+                        <textarea class="form-control" asp-for="ObservacionRecepcion" rows="3" maxlength="500"></textarea>
+                    </div>
+
+                   
+                </fieldset>
+            </div>
+
+            <div class="col-12">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Documentos requeridos</legend>
+
+                    <div id="documentosRequeridos">
+                        @if (Model.DocumentosRequeridos.Any())
+                        {
+                            foreach (var documento in Model.DocumentosRequeridos)
+                            {
+                                <div class="row align-items-center g-3 border-bottom py-3">
+                                    <div class="col-12 col-lg-5">
+                                        <div class="fw-semibold">@documento.Nombre</div>
+                                        <div class="text-700 fs--1">
+                                            @(documento.Obligatorio ? "Obligatorio" : "Opcional")
+                                            @if (!string.IsNullOrWhiteSpace(documento.Observacion))
+                                            {
+                                                <span> - @documento.Observacion</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-7">
+                                        <input class="form-control" name="documento_@documento.IdTipoDocumento" type="file" accept="@Model.ExtensionesPermitidas" />
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center text-700 py-4">Seleccione una carrera para ver los documentos requeridos.</div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <button class="btnAbm" type="submit">
+                <span class="btn-label"><i class="fa fa-save"></i></span> Registrar solicitud
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const carreraSelect = document.getElementById('IdCarrera');
+        const documentosContainer = document.getElementById('documentosRequeridos');
+        const extensionesPermitidas = '@Model.ExtensionesPermitidas';
+
+        const renderDocumento = (documento) => {
+            const requerido = documento.obligatorio ? 'Obligatorio' : 'Opcional';
+            const observacion = documento.observacion ? ` - ${documento.observacion}` : '';
+            const required = documento.obligatorio ? 'required' : '';
+
+            return `
+                <div class="row align-items-center g-3 border-bottom py-3">
+                    <div class="col-12 col-lg-5">
+                        <div class="fw-semibold">${documento.nombre}</div>
+                        <div class="text-700 fs--1">${requerido}${observacion}</div>
+                    </div>
+                    <div class="col-12 col-lg-7">
+                        <input class="form-control" name="documento_${documento.idTipoDocumento}" type="file" accept="${extensionesPermitidas}" ${required} />
+                    </div>
+                </div>`;
+        };
+
+        const cargarDocumentos = async () => {
+            const idCarrera = carreraSelect.value;
+            documentosContainer.innerHTML = '<div class="text-center text-700 py-4">Cargando documentos...</div>';
+
+            if (!idCarrera) {
+                documentosContainer.innerHTML = '<div class="text-center text-700 py-4">Seleccione una carrera para ver los documentos requeridos.</div>';
+                return;
+            }
+
+            const response = await fetch(`/EntradaDoc/DocumentosPorCarrera?idCarrera=${idCarrera}`);
+            const documentos = await response.json();
+
+            if (!documentos.length) {
+                documentosContainer.innerHTML = '<div class="text-center text-700 py-4">La carrera seleccionada no tiene documentos requeridos configurados.</div>';
+                return;
+            }
+
+            documentosContainer.innerHTML = documentos.map(renderDocumento).join('');
+        };
+
+        carreraSelect.addEventListener('change', cargarDocumentos);
+    </script>
+}

@@ -81,7 +81,6 @@
 
   <ItemGroup>
     <Folder Include="Class\" />
-    <Folder Include="ModelsCustom\" />
     <Folder Include="Views\Error404\" />
     <Folder Include="Views\Error500\" />
     <Folder Include="wwwroot\assets\img\ticket\" />

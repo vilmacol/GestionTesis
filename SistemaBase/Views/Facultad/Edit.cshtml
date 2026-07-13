@@ -1,0 +1,36 @@
+@model SistemaBase.Models.Facultad
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Editar facultad</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Edit" asp-route-id="@Model.IdFacultad" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdFacultad" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="Codigo" class="form-label fw-semibold">Codigo</label>
+            <input asp-for="Codigo" class="form-control" maxlength="20" required />
+            <span asp-validation-for="Codigo" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label fw-semibold">Nombre</label>
+            <input asp-for="Nombre" class="form-control" maxlength="150" required />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Activo" class="form-label fw-semibold">Activo</label>
+            <select asp-for="Activo" class="form-select">
+                <option value="S">Si</option>
+                <option value="N">No</option>
+            </select>
+        </div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

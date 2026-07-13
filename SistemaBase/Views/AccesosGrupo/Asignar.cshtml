@@ -1,0 +1,93 @@
+@model SistemaBase.ModelsCustom.AccesoGrupoAsignacion
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <div>
+        <h5 class="modal-title">Permisos del grupo @Model.IdGrupo</h5>
+        <div class="text-700 fs--1">@Model.DescripcionGrupo</div>
+    </div>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+
+<div class="modal-body">
+    <form asp-action="Asignar" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdGrupo" />
+
+        <h6 class="mb-3">Pantallas permitidas</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-center col-1">Permitir</th>
+                        <th>Modulo</th>
+                        <th>Codigo pantalla</th>
+                        <th>Pantalla</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Formas.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-700 py-4">No hay pantallas cargadas en Formularios.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var forma in Model.Formas)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <input class="form-check-input" type="checkbox" name="FormasSeleccionadas" value="@forma.Key" checked="@forma.Seleccionada" />
+                                </td>
+                                <td>@forma.Modulo</td>
+                                <td>@forma.NomForma</td>
+                                <td>@forma.Descripcion</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <h6 class="mt-4 mb-3">Estados visibles en revision de solicitudes</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-center col-1">Ver</th>
+                        <th>Estado</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.EstadosSolicitud.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-700 py-4">No hay estados activos cargados.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var estado in Model.EstadosSolicitud)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <input class="form-check-input" type="checkbox" name="EstadosSolicitudSeleccionados" value="@estado.IdEstadoSolicitud" checked="@estado.Seleccionado" />
+                                </td>
+                                <td>@estado.Nombre</td>
+                                <td>@estado.Descripcion</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

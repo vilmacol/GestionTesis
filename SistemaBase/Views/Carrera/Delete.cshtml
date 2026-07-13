@@ -1,0 +1,19 @@
+@model SistemaBase.Models.Carrera
+
+@{
+    ViewData["Title"] = "Eliminar carrera";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Eliminar carrera</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <p class="mt-3">Desea eliminar la carrera <strong>@Model.Descripcion</strong>?</p>
+    <form asp-action="Delete" asp-route-id="@Model.IdCarrera" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btnEliminar" type="submit"><i class="fa fa-trash"></i> Eliminar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

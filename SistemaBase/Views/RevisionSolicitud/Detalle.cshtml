@@ -1,0 +1,197 @@
+@model SistemaBase.ModelsCustom.SolicitudRevision
+
+@{
+    ViewData["Title"] = $"Solicitud Nro. {Model.IdSolicitudTesis}";
+}
+
+<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-6 pb-6 border-y border-300">
+    <div class="row align-items-end justify-content-between pb-4 g-3">
+        <div class="col-auto">
+            <h3 class="mb-2">Solicitud Nro. @Model.IdSolicitudTesis</h3>
+            <p class="text-700 mb-0">Estado actual: <strong>@Model.Estado</strong></p>
+        </div>
+        <div class="col-auto">
+            <a class="btnAbmCancelar" asp-action="Index">
+                <i class="fa fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["Error"]</div>
+    }
+
+    <div class="row g-4">
+        <div class="col-12 col-xl-6">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Datos del alumno</legend>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Alumno</dt>
+                    <dd class="col-sm-8">@Model.Alumno</dd>
+                    <dt class="col-sm-4">Documento / CI</dt>
+                    <dd class="col-sm-8">@Model.Documento</dd>
+                    <dt class="col-sm-4">Carrera</dt>
+                    <dd class="col-sm-8">@Model.Carrera</dd>
+                    <dt class="col-sm-4">Facultad</dt>
+                    <dd class="col-sm-8">@Model.Facultad</dd>
+                    <dt class="col-sm-4">Registro academico</dt>
+                    <dd class="col-sm-8">@Model.RegistroAcademico</dd>
+                    <dt class="col-sm-4">Correo</dt>
+                    <dd class="col-sm-8">@Model.Correo</dd>
+                    <dt class="col-sm-4">Telefono</dt>
+                    <dd class="col-sm-8">@Model.Telefono</dd>
+                </dl>
+            </fieldset>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Datos de tesis</legend>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Fecha solicitud</dt>
+                    <dd class="col-sm-8">@Model.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")</dd>
+                    <dt class="col-sm-4">Tutor</dt>
+                    <dd class="col-sm-8">@Model.Tutor</dd>
+                    <dt class="col-sm-4">Tema</dt>
+                    <dd class="col-sm-8">@Model.Tema</dd>
+                    <dt class="col-sm-4">Observacion recepcion</dt>
+                    <dd class="col-sm-8">@Model.ObservacionRecepcion</dd>
+                    <dt class="col-sm-4">Fecha presentacion</dt>
+                    <dd class="col-sm-8">@(Model.FechaPresentacion.HasValue ? Model.FechaPresentacion.Value.ToString("dd/MM/yyyy HH:mm") : "")</dd>
+                </dl>
+            </fieldset>
+        </div>
+
+        <div class="col-12">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Documentos cargados</legend>
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Archivo</th>
+                                <th>Extension</th>
+                                <th>Tamano</th>
+                                <th>Fecha carga</th>
+                                <th class="text-center col-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Documentos.Any())
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center text-700 py-3">No hay documentos cargados.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var documento in Model.Documentos)
+                                {
+                                    <tr>
+                                        <td>@documento.TipoDocumento</td>
+                                        <td>@documento.NombreArchivo</td>
+                                        <td>@documento.Extension</td>
+                                        <td>@(documento.TamanoKb.HasValue ? $"{documento.TamanoKb} KB" : "")</td>
+                                        <td>@documento.FechaCarga.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="text-center">
+                                            <a class="btnAbm" href="@Url.Action("Archivo", "RevisionSolicitud", new { id = documento.IdSolicitudDocumento })" target="_blank" rel="noopener">
+                                                <i class="fa fa-folder-open"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Avance del proceso</legend>
+                <form asp-action="CambiarEstado" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="IdSolicitudTesis" value="@Model.IdSolicitudTesis" />
+                    @if (Model.Transiciones.Any())
+                    {
+                        <div class="alert alert-info" role="alert">
+                            Seleccione el estado al que desea mover esta solicitud.
+                        </div>
+                        @if (Model.Transiciones.Any(t => t.RequiereFechaPresentacion))
+                        {
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="FechaPresentacion">Fecha de presentacion</label>
+                                <input class="form-control" type="datetime-local" id="FechaPresentacion" name="FechaPresentacion" />
+                            </div>
+                        }
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="Comentario">Comentario</label>
+                            <textarea class="form-control" id="Comentario" name="Comentario" rows="4" maxlength="1000"></textarea>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var transicion in Model.Transiciones)
+                            {
+                                <button class="btnAbm" type="submit" name="IdCarreraFlujoTransicion" value="@transicion.IdCarreraFlujoTransicion"
+                                        formaction="@Url.Action("CambiarEstado", new { IdEstadoSolicitudDestino = transicion.IdEstadoDestino })">
+                                    <i class="fa fa-arrow-right"></i> @transicion.EstadoDestino
+                                </button>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary mb-0" role="alert">
+                            Esta solicitud no tiene transiciones configuradas para su estado actual.
+                        </div>
+                    }
+                </form>
+            </fieldset>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Historial</legend>
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Accion</th>
+                                <th>Estado</th>
+                                <th>Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Historial.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-700 py-3">Sin historial.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var historial in Model.Historial)
+                                {
+                                    <tr>
+                                        <td>@historial.FechaMovimiento.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@historial.Accion</td>
+                                        <td>@historial.EstadoNuevo</td>
+                                        <td>@historial.Observacion</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

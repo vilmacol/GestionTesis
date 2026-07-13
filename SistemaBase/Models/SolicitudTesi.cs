@@ -23,6 +23,7 @@ namespace SistemaBase.Models
         public DateTime? FechaAsignacionTutor { get; set; }
         public DateTime? FechaEnvioDecano { get; set; }
         public DateTime? FechaRespuestaDecano { get; set; }
+        public DateTime? FechaPresentacion { get; set; }
         public string? Activo { get; set; }
 
         public virtual Alumno IdAlumnoNavigation { get; set; } = null!;

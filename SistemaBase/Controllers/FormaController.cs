@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-        using SistemaBase.Models;
+using SistemaBase.Filters;
+using SistemaBase.Models;
 
 namespace SistemaBase.Controllers
-{  
+{
+    [Authorize]
+    [AccesoPantalla("FORMA")]
     public class FormaController : Controller
     {
         private readonly UAADbContext _context;
@@ -18,168 +18,95 @@ namespace SistemaBase.Controllers
             _context = context;
         }
 
-        // GET: Forma
-    public async Task<IActionResult> Index()
-    {
-        ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo");
-        var uAADbContext = _context.Formas.Include(f => f.IdModuloNavigation);
-        return View(await uAADbContext.AsNoTracking().ToListAsync());
-    }
+        public async Task<IActionResult> Index()
+        {
+            var formas = _context.Formas.AsNoTracking().Include(f => f.IdModuloNavigation).OrderBy(f => f.IdModulo).ThenBy(f => f.NomForma);
+            return View(await formas.ToListAsync());
+        }
 
-
-
-
-
-
-
-
-
-    public async Task<IActionResult>
-    ResultTable()
-    {
-        ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo");
-    ViewData["Show"] = true;
-        var uAADbContext = _context.Formas.Include(f => f.IdModuloNavigation);
-        return View("Index",await uAADbContext.AsNoTracking().ToListAsync());
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: Forma/Details/5
-        public async Task<IActionResult> Details(string IdModulo,string NomForma)
-            {
-            var forma = await _context.Formas
-            .FindAsync(IdModulo,NomForma);
-            if (forma == null)
-            {
-            return NotFound();
-            }
-
-            return View(forma);
-            }
-
-            // GET: Forma/Create
-            public IActionResult Create()
-            {
-            ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo");
+        public async Task<IActionResult> Create()
+        {
+            await CargarCombos();
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Forma forma)
+        {
+            LimpiarValidaciones();
+            if (!ModelState.IsValid)
+            {
+                await CargarCombos(forma.IdModulo);
+                return View(forma);
             }
 
-            // POST: Forma/Create
-            // To protect from overposting attacks, enable the specific properties you want to bind to.
-            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Forma forma)
-                {
-            _context.Add(forma);
+            _context.Formas.Add(forma);
             await _context.SaveChangesAsync();
-                return RedirectToAction("ResultTable");
+            return RedirectToAction(nameof(Index));
+        }
 
-                //return RedirectToAction(nameof(Index));
-                ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo", forma.IdModulo);
-                return RedirectToAction("ResultTable");
+        public async Task<IActionResult> Edit(string idModulo, string nomForma)
+        {
+            var forma = await _context.Formas.FindAsync(idModulo, nomForma);
+            if (forma == null) return NotFound();
+            await CargarCombos(forma.IdModulo);
+            return View(forma);
+        }
 
-                // return View(forma);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string idModulo, string nomForma, Forma forma)
+        {
+            LimpiarValidaciones();
+            if (idModulo != forma.IdModulo || nomForma != forma.NomForma) return NotFound();
+            if (!ModelState.IsValid)
+            {
+                await CargarCombos(forma.IdModulo);
+                return View(forma);
+            }
+
+            _context.Update(forma);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(string idModulo, string nomForma)
+        {
+            var forma = await _context.Formas.AsNoTracking().FirstOrDefaultAsync(f => f.IdModulo == idModulo && f.NomForma == nomForma);
+            return forma == null ? NotFound() : View(forma);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string idModulo, string nomForma)
+        {
+            var forma = await _context.Formas.FindAsync(idModulo, nomForma);
+            if (forma != null)
+            {
+                try
+                {
+                    _context.Formas.Remove(forma);
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateException)
+                {
+                    TempData["Error"] = "No se puede eliminar el formulario porque tiene accesos relacionados.";
+                }
+            }
 
-                // GET: Forma/Edit/5
-        public async Task<IActionResult> Edit(string IdModulo,string NomForma)
-                    {
+            return RedirectToAction(nameof(Index));
+        }
 
-                    var forma = await _context.Formas.FindAsync(IdModulo,NomForma);
-                    if (forma == null)
-                    {
-                    return NotFound();
-                    }
-                    ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo", forma.IdModulo);
-                    return View(forma);
-                    }
+        private async Task CargarCombos(string? idModulo = null)
+        {
+            ViewData["IdModulo"] = new SelectList(await _context.Modulos.AsNoTracking().OrderBy(m => m.IdModulo).ToListAsync(), "IdModulo", "IdModulo", idModulo);
+        }
 
-                    // POST: Forma/Edit/5
-                    // To protect from overposting attacks, enable the specific properties you want to bind to.
-                    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-                    [HttpPost]
-                    [ValidateAntiForgeryToken]
-                    public async Task<IActionResult>
-                        Edit(string IdModulo,string NomForma,  Forma forma)
-                        {
-
-                        try
-                        {
-                        _context.Update(forma);
-                        await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                        if (!FormaExists(forma.IdModulo))
-                        {
-                        return NotFound();
-                        }
-                        else
-                        {
-                        throw;
-                        }
-                        }
-                        return RedirectToAction("ResultTable");
-
-                        // return RedirectToAction(nameof(Index));
-                        ViewData["IdModulo"] = new SelectList(_context.Modulos, "IdModulo", "IdModulo", forma.IdModulo);
-                        return RedirectToAction("ResultTable");
-
-                        //return View(forma);
-                        }
-
-                        // GET: Forma/Delete/5
-                        public async Task<IActionResult>
-                            Delete(string IdModulo,string NomForma)
-                            {
-
-                            var forma = await _context.Formas
-                            .FindAsync(IdModulo,NomForma);
-                            if (forma == null)
-                            {
-                            return NotFound();
-                            }
-
-                            return View(forma);
-                            }
-
-                            // POST: Forma/Delete/5
-                            [HttpPost, ActionName("Delete")]
-                            [ValidateAntiForgeryToken]
-                            public async Task<IActionResult>
-                                DeleteConfirmed(string IdModulo,string NomForma)
-                                {
-                                if (_context.Formas == null)
-                                {
-                                return Problem("Entity set 'UAADbContext.Formas'  is null.");
-                                }
-                                var forma = await _context.Formas.FindAsync(IdModulo,NomForma);
-                                if (forma != null)
-                                {
-                                _context.Formas.Remove(forma);
-                                }
-
-                                await _context.SaveChangesAsync();
-                                return RedirectToAction("ResultTable");
-
-                                //return RedirectToAction(nameof(Index));
-                                //return RedirectToAction(nameof(Index));
-                                }
-
-                                private bool FormaExists(string id)
-                                {
-                                return (_context.Formas?.Any(e => e.IdModulo == id)).GetValueOrDefault();
-                                }
-                                }
-                                }
+        private void LimpiarValidaciones()
+        {
+            ModelState.Remove(nameof(Forma.IdModuloNavigation));
+            ModelState.Remove(nameof(Forma.IdGrupos));
+        }
+    }
+}

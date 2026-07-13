@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-        using SistemaBase.Models;
+using SistemaBase.Filters;
+using SistemaBase.Models;
 
 namespace SistemaBase.Controllers
 {
+    [Authorize]
+    [AccesoPantalla("MODULO")]
     public class ModuloController : Controller
     {
         private readonly UAADbContext _context;
@@ -18,164 +17,67 @@ namespace SistemaBase.Controllers
             _context = context;
         }
 
-        // GET: Modulo
-    public async Task<IActionResult> Index()
-    {
-            return _context.Modulos != null ?
-              View(await _context.Modulos.AsNoTracking().ToListAsync()) :
-              Problem("Entity set 'UAADbContext.Modulos'  is null.");
-    }
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Modulos.AsNoTracking().OrderBy(m => m.IdModulo).ToListAsync());
+        }
 
+        public IActionResult Create() => View();
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Modulo modulo)
+        {
+            if (!ModelState.IsValid) return View(modulo);
 
-
-
-
-
-
-
-    public async Task<IActionResult>
-    ResultTable()
-    {
-    ViewData["Show"] = true;
-            return _context.Modulos != null ?
-              View("Index", await _context.Modulos.AsNoTracking().ToListAsync()) :
-              Problem("Entity set 'UAADbContext.Modulos'  is null.");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: Modulo/Details/5
-        public async Task<IActionResult> Details(string IdModulo)
-            {
-            var modulo = await _context.Modulos
-            .FindAsync(IdModulo);
-            if (modulo == null)
-            {
-            return NotFound();
-            }
-
-            return View(modulo);
-            }
-
-            // GET: Modulo/Create
-            public IActionResult Create()
-            {
-            return View();
-            }
-
-            // POST: Modulo/Create
-            // To protect from overposting attacks, enable the specific properties you want to bind to.
-            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Modulo modulo)
-                {
-            _context.Add(modulo);
+            _context.Modulos.Add(modulo);
             await _context.SaveChangesAsync();
-                return RedirectToAction("ResultTable");
+            return RedirectToAction(nameof(Index));
+        }
 
-                //return RedirectToAction(nameof(Index));
-                return RedirectToAction("ResultTable");
+        public async Task<IActionResult> Edit(string id)
+        {
+            var modulo = await _context.Modulos.FindAsync(id);
+            return modulo == null ? NotFound() : View(modulo);
+        }
 
-                // return View(modulo);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, Modulo modulo)
+        {
+            if (id != modulo.IdModulo) return NotFound();
+            if (!ModelState.IsValid) return View(modulo);
+
+            _context.Update(modulo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var modulo = await _context.Modulos.AsNoTracking().FirstOrDefaultAsync(m => m.IdModulo == id);
+            return modulo == null ? NotFound() : View(modulo);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var modulo = await _context.Modulos.FindAsync(id);
+            if (modulo != null)
+            {
+                try
+                {
+                    _context.Modulos.Remove(modulo);
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateException)
+                {
+                    TempData["Error"] = "No se puede eliminar el modulo porque tiene formularios relacionados.";
+                }
+            }
 
-                // GET: Modulo/Edit/5
-        public async Task<IActionResult> Edit(string IdModulo)
-                    {
-
-                    var modulo = await _context.Modulos.FindAsync(IdModulo);
-                    if (modulo == null)
-                    {
-                    return NotFound();
-                    }
-                    return View(modulo);
-                    }
-
-                    // POST: Modulo/Edit/5
-                    // To protect from overposting attacks, enable the specific properties you want to bind to.
-                    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-                    [HttpPost]
-                    [ValidateAntiForgeryToken]
-                    public async Task<IActionResult>
-                        Edit(string IdModulo,  Modulo modulo)
-                        {
-
-                        try
-                        {
-                        _context.Update(modulo);
-                        await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                        if (!ModuloExists(modulo.IdModulo))
-                        {
-                        return NotFound();
-                        }
-                        else
-                        {
-                        throw;
-                        }
-                        }
-                        return RedirectToAction("ResultTable");
-
-                        // return RedirectToAction(nameof(Index));
-                        return RedirectToAction("ResultTable");
-
-                        //return View(modulo);
-                        }
-
-                        // GET: Modulo/Delete/5
-                        public async Task<IActionResult>
-                            Delete(string IdModulo)
-                            {
-
-                            var modulo = await _context.Modulos
-                            .FindAsync(IdModulo);
-                            if (modulo == null)
-                            {
-                            return NotFound();
-                            }
-
-                            return View(modulo);
-                            }
-
-                            // POST: Modulo/Delete/5
-                            [HttpPost, ActionName("Delete")]
-                            [ValidateAntiForgeryToken]
-                            public async Task<IActionResult>
-                                DeleteConfirmed(string IdModulo)
-                                {
-                                if (_context.Modulos == null)
-                                {
-                                return Problem("Entity set 'UAADbContext.Modulos'  is null.");
-                                }
-                                var modulo = await _context.Modulos.FindAsync(IdModulo);
-                                if (modulo != null)
-                                {
-                                _context.Modulos.Remove(modulo);
-                                }
-
-                                await _context.SaveChangesAsync();
-                                return RedirectToAction("ResultTable");
-
-                                //return RedirectToAction(nameof(Index));
-                                //return RedirectToAction(nameof(Index));
-                                }
-
-                                private bool ModuloExists(string id)
-                                {
-                                return (_context.Modulos?.Any(e => e.IdModulo == id)).GetValueOrDefault();
-                                }
-                                }
-                                }
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}

@@ -137,7 +137,7 @@
 
     @{
         bool isAdmin = (roleClaim == "ADMIN");
-        string displayStyle = (roleClaim == "ADMIN") ? "" : "display:none;";
+        string displayStyle = "";
         var cacheBuster = DateTime.Now.Ticks;
 
     }
@@ -201,6 +201,15 @@
                                                 </li> *@
 
                                                 <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="AccesosGrupo" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Accesos por Grupos</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
                                                     <a class="nav-link" asp-controller="Forma" asp-action="index"
                                                        data-bs-toggle="" aria-expanded="false">
                                                         <div class="d-flex align-items-center">
@@ -238,9 +247,24 @@
                                                 </li>
                                                
                                                 <li class="nav-item">
-                                                    <a class="nav-link" asp-controller="Persona" asp-action="index" data-bs-toggle="" aria-expanded="false">
+                                                    <a class="nav-link" asp-controller="Personas" asp-action="index" data-bs-toggle="" aria-expanded="false">
                                                         <div class="d-flex align-items-center">
                                                             <span class="nav-link-text">Personas</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="Alumno" asp-action="index" data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Alumnos</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="Facultad" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Facultades</span>
                                                         </div>
                                                     </a>
                                                 </li>
@@ -249,6 +273,60 @@
                                                        data-bs-toggle="" aria-expanded="false">
                                                         <div class="d-flex align-items-center">
                                                             <span class="nav-link-text">Carreras</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="Tutor" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Tutores</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="TipoDocumento" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Tipos de Documento</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="TipoExtension" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Tipos de Extension</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="CarreraDocumentoRequerido" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Documentos por Carrera</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="CarreraFlujoTransicion" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Flujo de Tesis</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="EstadoSolicitud" asp-action="index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Estados de Solicitud</span>
                                                         </div>
                                                     </a>
                                                 </li>
@@ -263,45 +341,39 @@
 
                                     @*Fin sistema base *@
 
-
-
-                                    @*Inicio Registro de Tesis *@
-
                                     <span class="nav-item-wrapper">
 
-                                        <a class="nav-link dropdown-indicator label-1" href="#registro-marca" role="button" onclick="handleDropdownClick(event, 'registro-marca')">
+                                        <a class="nav-link dropdown-indicator label-1" href="#movimientos" role="button" onclick="handleDropdownClick(event, 'movimientos')">
                                             <div class="d-flex align-items-center">
-                                              
                                                 <div class="dropdown-indicator-icon">
                                                     <span class="fas fa-caret-right"></span>
-
                                                 </div>
-                                                <span class="nav-link-icon"><span data-feather="clipboard"></span></span>
-                                                <span class="nav-link-text ms-2"> Secciones</span>
-
-                                                
+                                                <span class="nav-link-icon"><span data-feather="upload-cloud"></span></span>
+                                                <span class="nav-link-text ms-2">Movimientos</span>
                                             </div>
                                         </a>
 
                                         <div class="parent-wrapper label-1">
-                                           
-                                            <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="registro-tesis">
-                                                <p class="collapsed-nav-item-title d-none">Secciones</p>
-                                           @*    <input type="text" id="searchPag" placeholder="Buscar por nombre" onkeyup="filterNames()" > *@
-                                               
-                                              
+                                            <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="movimientos">
+                                                <p class="collapsed-nav-item-title d-none">Movimientos</p>
+
                                                 <li class="nav-item">
-                                                    <a class="nav-link" asp-controller="BolsaTrabajo" asp-action="index"
+                                                    <a class="nav-link" asp-controller="EntradaDoc" asp-action="Index"
                                                        data-bs-toggle="" aria-expanded="false">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="nav-link-text">Bolsa de Trabajo</span>
+                                                            <span class="nav-link-text">Carga de Solicitud</span>
                                                         </div>
                                                     </a>
                                                 </li>
-                                               
-
+                                                <li class="nav-item">
+                                                    <a class="nav-link" asp-controller="RevisionSolicitud" asp-action="Index"
+                                                       data-bs-toggle="" aria-expanded="false">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="nav-link-text">Revision de solicitudes</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
                                             </ul>
-
                                         </div>
 
                                     </span>
@@ -370,7 +442,7 @@
                                         <i class="fa fa-ellipsis-v"></i> 
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                        <li><a class="dropdown-item text-wrap" asp-controller="Login" asp-action="ActualizarPass" asp-route-user="@User.Identity.Name">Cambiar Contraseña</a></li>
+                                       @*  <li><a class="dropdown-item text-wrap" asp-controller="Login" asp-action="ActualizarPass" asp-route-user="@User.Identity.Name">Cambiar Contraseña</a></li> *@
                                         <li><a class="dropdown-item text-wrap" asp-controller="Login" asp-action="Logout">Salir</a></li>
                                     </ul>
                                 </div>

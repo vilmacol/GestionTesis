@@ -1,0 +1,19 @@
+@model SistemaBase.Models.TipoDocumento
+
+@{
+    ViewData["Title"] = "Eliminar tipo de documento";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Eliminar tipo de documento</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <p class="mt-3">Desea desactivar el tipo de documento <strong>@Model.Nombre</strong>?</p>
+    <form asp-action="Delete" asp-route-id="@Model.IdTipoDocumento" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btnEliminar" type="submit"><i class="fa fa-trash"></i> Desactivar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

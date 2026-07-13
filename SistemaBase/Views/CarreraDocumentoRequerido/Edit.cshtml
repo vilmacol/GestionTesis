@@ -1,0 +1,37 @@
+@model SistemaBase.Models.CarreraDocumentoRequerido
+
+@{
+    ViewData["Title"] = "Editar documento requerido";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Editar documento requerido</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Edit" asp-route-id="@Model.IdCarreraDocumentoRequerido" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdCarreraDocumentoRequerido" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdCarrera">Carrera</label>
+            <select class="form-select" asp-for="IdCarrera" asp-items="ViewBag.IdCarrera" required></select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdTipoDocumento">Tipo de documento</label>
+            <select class="form-select" asp-for="IdTipoDocumento" asp-items="ViewBag.IdTipoDocumento" required></select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="Obligatorio">Obligatorio</label>
+            <select class="form-select" asp-for="Obligatorio">
+                <option value="true">Si</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Observacion">Observacion</label><textarea class="form-control" asp-for="Observacion" maxlength="250"></textarea></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Activo">Activo</label><select class="form-select" asp-for="Activo"><option value="S">S</option><option value="N">N</option></select></div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

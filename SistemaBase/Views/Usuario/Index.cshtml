@@ -1,259 +1,66 @@
 @model IEnumerable<SistemaBase.Models.Usuario>
 
-     @{
-      List<string> columns =  new List<string>();
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.IdUsuario)+"\""); 
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.PasswordHash)+"\""); 
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.FecCreacion)+"\""); 
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.CodGrupo)+"\""); 
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.IdPersona)+"\""); 
-                                        columns.Add("\""+Html.DisplayNameFor(model => model.Activo)+"\""); 
-                                      columns.Add("\""+Html.DisplayNameFor(model => model.CodGrupoNavigation)+"\""); 
-                                      columns.Add("\""+Html.DisplayNameFor(model => model.IdPersonaNavigation)+"\""); 
-     if (ViewData["Show"] != null)
-     {
-         Layout = "";
-    }
-    }
-        @{
-        ViewData["Title"] = "Index";
-        }
-        
-        
-       @if (ViewData["Show"] == null) {
-        <p>
-            <a class="d-none" id="detailsview" type="button" data-bs-toggle="modal" data-bs-target="#detailsModal"></a>
-        </p>                             
-        <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
-                         <div data-list='{"valueNames":[@string.Join(",", columns) ],"page":16}'>
-                 <div class="row align-items-end justify-content-between pb-5 g-3">
-                     <div class="col-auto">
-                         <h3> Usuario</h3>
-                          <button class="btnAbm  mt-3" onclick="modalcreate()">
-                            <span class="btn-label"><i class="fa fa-plus"></i></span> Nuevo
-                        </button>
-                     </div>
-                     <div class="col-12 col-md-auto">
-                         <div class="row g-2 gy-3">
-                             <div class="col-auto flex-1">
-                                 <div class="search-box">
-                                     <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                                         <input class="form-control search-input search form-control-sm" type="search" placeholder="Buscar" aria-label="Search" />
-                                         <span class="fas fa-search search-box-icon"></span>
-                                     </form>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                </div>
-                <div id="listbody">
-                <div class="table-responsive mx-n1 px-1Latest" >
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="white-space-nowrap fs--1 ps-0 align-middle text-center col-1 pt-2 pb-2 pl-2"></th>
-                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.IdUsuario))"> @Html.DisplayNameFor(model => model.IdUsuario)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.PasswordHash)"> @Html.DisplayNameFor(model => model.PasswordHash)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.FecCreacion)"> @Html.DisplayNameFor(model => model.FecCreacion)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0" data-sort="@Html.DisplayNameFor(model => model.Activo)"> @Html.DisplayNameFor(model => model.Activo)</th>
-                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.CodGrupoNavigation))"> @Html.DisplayNameFor(model => model.CodGrupoNavigation)</th>
-                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0  text-center col-2 p-0"  data-sort="@Html.DisplayNameFor(model => model.IdPersonaNavigation))"> @Html.DisplayNameFor(model => model.IdPersonaNavigation)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            @foreach (var item in Model) {
-                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                                    <td class="fs--1 align-middle ps-0 text-center col-1 pt-2 pb-2 pl-2">
-                                        <button class="btnAbm" onclick="modaledit('@item.IdUsuario')"><i class="fa fa-pencil"></i></button>
-                                        <button class="btnAbm" onclick="modaldelete('@item.IdUsuario')"><i class="fa fa-trash"></i></button>
-                                    </td>
-                                       <td class="@Html.DisplayNameFor(modelItem => item.IdUsuario) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.IdUsuario)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.PasswordHash)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.PasswordHash)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.FecCreacion)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.FecCreacion)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.Activo)  fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.Activo)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.CodGrupoNavigation) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.CodGrupoNavigation.IdGrupo)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.IdPersonaNavigation) fs--1 align-middle ps-0 text-left col-2 pt-2 pb-2 ps-2"> @Html.DisplayFor(modelItem => item.IdPersonaNavigation.IdPersona)</td>
-                            </tr>
-                                                                        }
-                        </tbody>
-                    </table>
-                 </div>
-                    </div>
-                 <div class="row align-items-center py-1">
-                     <div class="pagination d-none"></div>
-                     <div class="col d-flex fs--1">
-                        <p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p><a class="fw-semi-bold" href="#!" data-list-view="*">Ver Todos<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!" data-list-view="less">Ver menos</a>
-                     </div>
-                     <div class="col-auto d-flex">
-                         <button class="btn btn-link px-1 me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left me-2"></span>Previa</button>
-                         <button class="btn btn-link px-1 ms-1" type="button" title="Next" data-list-pagination="next">Siguiente<span class="fas fa-chevron-right ms-2"></span></button>
-                     </div>
-                </div>
-            </div>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-6 pb-6 border-y border-300">
+    <div class="row align-items-end justify-content-between pb-4 g-3">
+        <div class="col-auto">
+            <h3 class="mb-2">Usuarios</h3>
+            <button class="btnAbm" type="button" onclick="openAbmModal('@Url.Action("Create")')"><span class="btn-label"><i class="fa fa-plus"></i></span> Nuevo</button>
         </div>
-        <div id="details"></div>
-        <script>
-    const editsubmit = (IdUsuario) => {
-    e.preventDefault();
-    const form = document.getElementById( "Usuario" + "FormEdit" );
-    const formData = new FormData(form);
-    axios({
-    method: "post",
-    url: "Usuario"+"" + `/Edit`,
-    data: formData,
-    headers: {
-    "Content-Type": "multipart/form-data",
-    'X-Response-View': 'Json'
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["Error"]</div>
     }
-    })
-    .then(function (response) {
-    document.getElementById("listbody").innerHTML = response.data;
-    document.getElementById("editmodal").click();
-    })
-    .catch(function (response) {
-    console.log(response);
-    });
-    };
-    const modalcreate = () => {
-    axios({
-    baseURL: "Usuario"+"" + "/Create" ,
-    method: 'Get',
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Response-View': 'Json'
-    }
-    }).then(response => {
-    document.getElementById("details").innerHTML = response.data;
-    document.getElementById("detailsview").click();
-    });
-    };
-    const modaledit = (IdUsuario) => {
-    axios({
-    baseURL: "Usuario"+"" + "/Edit?" +`IdUsuario=${IdUsuario}`,
-    method: 'Get',
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Response-View': 'Json'
-    }
-    }).then(response => {
-    document.getElementById("details").innerHTML = response.data;
-    document.getElementById("detailsview").click();
-    });
-    };
-    const modaldetails = (IdUsuario) => {
-    axios({
-    baseURL: "Usuario"+"" + "/Details?" +`IdUsuario=${IdUsuario}`,
-    method: 'Get',
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Response-View': 'Json'
-    }
-    }).then(response => {
-    document.getElementById("details").innerHTML = response.data;
-    document.getElementById("detailsview").click();
-    });
-    };
-    const modaldelete = (IdUsuario) => {
-    axios({
-    baseURL: "Usuario"+"" + "/Delete?" +`IdUsuario=${IdUsuario}`,
-    method: 'Get',
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Response-View': 'Json'
-    }
-    }).then(response => {
-    document.getElementById("details").innerHTML = response.data;
-    document.getElementById("detailsview").click();
-    });
-    };
-    const submitforms = (e, url, id) => {
-        e.preventDefault();
-        document.getElementById("loader_inv").style.visibility = "visible";
-        const form = document.getElementById(id);
-        const formData = new FormData(form);
-        axios({
-        method: "post",
-        url:  "Usuario"+"/" + `${url}`,
-        data: formData,
-        headers: {
-        "Content-Type": "multipart/form-data",
-        'X-Response-View': 'Json'
+
+    <div class="table-responsive mx-n1 px-1Latest">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center col-1">Usuario</th>
+                    <th>Persona</th>
+                    <th>Grupo</th>
+                    <th class="text-center">Activo</th>
+                    <th>Creacion</th>
+                    <th class="text-center col-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">@item.IdUsuario</td>
+                    <td>@(item.IdPersonaNavigation?.Nombre ?? item.IdPersona)</td>
+                    <td>@(item.CodGrupoNavigation?.Descripcion ?? item.CodGrupo)</td>
+                    <td class="text-center">@item.Activo</td>
+                    <td>@item.FecCreacion.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">
+                        <button class="btnAbm" type="button" onclick="openAbmModal('@Url.Action("Edit", new { id = item.IdUsuario })')"><i class="fa fa-pencil"></i></button>
+                        <button class="btnEliminar" type="button" onclick="openAbmModal('@Url.Action("Delete", new { id = item.IdUsuario })')"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="abmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" id="abmModalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function openAbmModal(url) {
+            const response = await fetch(url);
+            document.getElementById('abmModalContent').innerHTML = await response.text();
+            new bootstrap.Modal(document.getElementById('abmModal')).show();
         }
-        })
-        .then(function (response) {
-        document.getElementById("listbody").innerHTML = response.data;
-        document.getElementById("editmodal").click();
-        document.getElementsByClassName("modal-backdrop fade show")[0].className = "";
-        })
-        .catch(function (response) {
-        console.log(response);
-        }).finally(() => {
-        document.getElementById("loader_inv").style.visibility = "hidden";
-        refrestjsfunction();
-        });
-        };
-const verifyCheckbox = (id) => {
-var checkBox = document.getElementById(id+"_2");
-var text = document.getElementById(id);
-if (checkBox.checked == true){
-text.value = "S";
-} else {
-text.value = "N";
-}
-}
-   const refrestjsfunction = () => {
-    const refreshjs = document.querySelectorAll("script");
-refreshjs.forEach((item) =>
-{
-    var src = item.src;
-    item.remove();
-    var script,
-        scriptTag;
-    script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = src;
-    scriptTag = document.getElementsByTagName('script')[0];
-    scriptTag.parentNode.insertBefore(script, scriptTag );
-})
-    }
     </script>
-     }else{
-                <div>
-               <div class="table-responsive mx-n1 px-1Latest" >
-                    <table class="table table-striped fs--1 mb-0 border-top border-200">
-                        <thead>
-                            <tr>
-                                <th class="white-space-nowrap fs--1 ps-0 align-middle"></th>
-                                    <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.IdUsuario))"> @Html.DisplayNameFor(model => model.IdUsuario)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.PasswordHash)"> @Html.DisplayNameFor(model => model.PasswordHash)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.FecCreacion)"> @Html.DisplayNameFor(model => model.FecCreacion)</th>
-                                        <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle" data-sort="@Html.DisplayNameFor(model => model.Activo)"> @Html.DisplayNameFor(model => model.Activo)</th>
-                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.CodGrupoNavigation))"> @Html.DisplayNameFor(model => model.CodGrupoNavigation)</th>
-                                       <th class="sort align-middle ps-3 white-space-nowrap fs--1 ps-0 align-middle"  data-sort="@Html.DisplayNameFor(model => model.IdPersonaNavigation))"> @Html.DisplayNameFor(model => model.IdPersonaNavigation)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            @foreach (var item in Model) {
-                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                                    <td class="fs--1 align-middle ps-0">
-                                        <button class="btnAbm" onclick="modaledit('@item.IdUsuario')"><i class="fa fa-pencil"></i></button>
-                                        <button class="btnAbm" onclick="modaldelete('@item.IdUsuario')"><i class="fa fa-trash"></i></button>
-                                        <button class="btnAbm" onclick="modaldetails('@item.IdUsuario')"><i class="fa fa-arrow-right"></i></button>
-                                    </td>
-                                       <td class="@Html.DisplayNameFor(modelItem => item.IdUsuario) fs--1 align-middle ps-0"> @Html.DisplayFor(modelItem => item.IdUsuario)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.PasswordHash)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.PasswordHash)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.FecCreacion)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.FecCreacion)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.Activo)  fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.Activo)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.CodGrupoNavigation) fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.CodGrupoNavigation.IdGrupo)</td>
-                                        <td class="@Html.DisplayNameFor(modelItem => item.IdPersonaNavigation) fs--1 align-middle ps-0 "> @Html.DisplayFor(modelItem => item.IdPersonaNavigation.IdPersona)</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                 </div>
-                    </div>
-     }
+}

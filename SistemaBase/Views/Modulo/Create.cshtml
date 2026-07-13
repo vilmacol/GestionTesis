@@ -1,79 +1,28 @@
-﻿
 @model SistemaBase.Models.Modulo
 
-    @{
-    ViewData["Title"] = "Create";
+@{
     Layout = "";
-     string namecheck = "";
-    }
-    
- <div class="modal fade " id="detailsModal" tabindex="-1" aria-labelledby="detailsModallLabel" style="display: none;" aria-modal="true" role="dialog">
-     <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title" id="detailsModalLabel">Modulo</h5>
-                 <button class="btn p-1" type="button"  data-bs-dismiss="modal" aria-label="Close" id="editmodal" ><svg class="svg-inline--fa fa-xmark fs--1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs--1"></span> Font Awesome fontawesome.com --></button>
-             </div>
-             <div class="modal-body">
-    <form asp-action="Create" id="FormModalCreate" onsubmit="submitforms(event,'Create', 'FormModalCreate')" class="mb-0">
-    <div class="row g-0 mt-0 mb-0">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="form-control-label fs-0 subTitleModal " asp-for="IdModulo"></label>
-                                        </div>
-                                        <div class="col-8">
-                       <input class="form-control" asp-for="IdModulo" />
-                                                <span asp-validation-for="IdModulo" class="text-danger k-invalid-msg" data-for="IdModulo"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="form-control-label fs-0 subTitleModal " asp-for="Descripcion"></label>
-                                        </div>
-                                        <div class="col-8">
-                       <input class="form-control" asp-for="Descripcion" />
-                                                <span asp-validation-for="Descripcion" class="text-danger k-invalid-msg" data-for="Descripcion"></span>
-                                        </div>
-                                    </div>
-                                </div>
+}
 
-                 <div class="text-center" id="loader_inv" style="visibility: hidden;">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only"></span>
-                            </div>
-             </div>
-
-    </div>
-
-
-         
-
-
-            <div class="modal-footer">
-                <button class="btnAbm" type="submit">
-                    <span class="btn-label"><i class="fa fa-save"></i></span> Guardar
-                </button>
-
-                <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">
-                    <span class="btn-label"><i class="fa fa-remove"></i></span> Cancelar
-                </button>
-            </div>
-
-
-
-            </form>
-
-
-
-
-
-
+<div class="modal-header">
+    <h5 class="modal-title">Nuevo modulo</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
 </div>
+<div class="modal-body">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="IdModulo" class="form-label fw-semibold">Codigo</label>
+            <input asp-for="IdModulo" class="form-control" maxlength="2" required />
+            <span asp-validation-for="IdModulo" class="text-danger"></span>
         </div>
-    </div>
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label fw-semibold">Descripcion</label>
+            <input asp-for="Descripcion" class="form-control" maxlength="80" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
 </div>
-

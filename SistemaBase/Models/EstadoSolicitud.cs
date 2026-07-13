@@ -7,6 +7,10 @@ namespace SistemaBase.Models
     {
         public EstadoSolicitud()
         {
+            GruposUsuarios = new HashSet<GruposUsuario>();
+            CarreraIdEstadoInicialTesisNavigations = new HashSet<Carrera>();
+            CarreraFlujoTransicionIdEstadoDestinoNavigations = new HashSet<CarreraFlujoTransicion>();
+            CarreraFlujoTransicionIdEstadoOrigenNavigations = new HashSet<CarreraFlujoTransicion>();
             SolicitudTesis = new HashSet<SolicitudTesi>();
         }
 
@@ -15,6 +19,10 @@ namespace SistemaBase.Models
         public string? Descripcion { get; set; }
         public string? Activo { get; set; }
 
+        public virtual ICollection<GruposUsuario> GruposUsuarios { get; set; }
+        public virtual ICollection<Carrera> CarreraIdEstadoInicialTesisNavigations { get; set; }
+        public virtual ICollection<CarreraFlujoTransicion> CarreraFlujoTransicionIdEstadoDestinoNavigations { get; set; }
+        public virtual ICollection<CarreraFlujoTransicion> CarreraFlujoTransicionIdEstadoOrigenNavigations { get; set; }
         public virtual ICollection<SolicitudTesi> SolicitudTesis { get; set; }
     }
 }

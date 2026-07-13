@@ -19,7 +19,9 @@ namespace SistemaBase.Models
         public virtual DbSet<Alumno> Alumnos { get; set; } = null!;
         public virtual DbSet<Carrera> Carreras { get; set; } = null!;
         public virtual DbSet<CarreraDocumentoRequerido> CarreraDocumentoRequeridos { get; set; } = null!;
+        public virtual DbSet<CarreraFlujoTransicion> CarreraFlujoTransicions { get; set; } = null!;
         public virtual DbSet<EstadoSolicitud> EstadoSolicituds { get; set; } = null!;
+        public virtual DbSet<Facultad> Facultads { get; set; } = null!;
         public virtual DbSet<Forma> Formas { get; set; } = null!;
         public virtual DbSet<GruposUsuario> GruposUsuarios { get; set; } = null!;
         public virtual DbSet<HistorialSolicitud> HistorialSolicituds { get; set; } = null!;
@@ -29,6 +31,7 @@ namespace SistemaBase.Models
         public virtual DbSet<SolicitudDocumento> SolicitudDocumentos { get; set; } = null!;
         public virtual DbSet<SolicitudTesi> SolicitudTeses { get; set; } = null!;
         public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; } = null!;
+        public virtual DbSet<TipoExtension> TipoExtensions { get; set; } = null!;
         public virtual DbSet<Tutor> Tutors { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
@@ -107,6 +110,16 @@ namespace SistemaBase.Models
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("DESCRIPCION");
+
+                entity.HasOne(d => d.IdEstadoInicialTesisNavigation)
+                    .WithMany(p => p.CarreraIdEstadoInicialTesisNavigations)
+                    .HasForeignKey(d => d.IdEstadoInicialTesis)
+                    .HasConstraintName("FK_CARRERA_ESTADO_INICIAL_TESIS");
+
+                entity.HasOne(d => d.IdFacultadNavigation)
+                    .WithMany(p => p.Carreras)
+                    .HasForeignKey(d => d.IdFacultad)
+                    .HasConstraintName("FK_CARRERA_FACULTAD");
             });
 
             modelBuilder.Entity<CarreraDocumentoRequerido>(entity =>
@@ -145,6 +158,49 @@ namespace SistemaBase.Models
                     .HasConstraintName("FK_CDR_TIPO_DOCUMENTO");
             });
 
+            modelBuilder.Entity<CarreraFlujoTransicion>(entity =>
+            {
+                entity.HasKey(e => e.IdCarreraFlujoTransicion)
+                    .HasName("PK_CARRERA_FLUJO_TRANSICION");
+
+                entity.ToTable("CARRERA_FLUJO_TRANSICION");
+
+                entity.Property(e => e.Accion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Activo)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.RequiereComentario)
+                    .IsRequired()
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.RequiereFechaPresentacion)
+                    .IsRequired()
+                    .HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.IdCarreraNavigation)
+                    .WithMany(p => p.CarreraFlujoTransicions)
+                    .HasForeignKey(d => d.IdCarrera)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CFT_CARRERA");
+
+                entity.HasOne(d => d.IdEstadoDestinoNavigation)
+                    .WithMany(p => p.CarreraFlujoTransicionIdEstadoDestinoNavigations)
+                    .HasForeignKey(d => d.IdEstadoDestino)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CFT_ESTADO_DESTINO");
+
+                entity.HasOne(d => d.IdEstadoOrigenNavigation)
+                    .WithMany(p => p.CarreraFlujoTransicionIdEstadoOrigenNavigations)
+                    .HasForeignKey(d => d.IdEstadoOrigen)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CFT_ESTADO_ORIGEN");
+            });
+
             modelBuilder.Entity<EstadoSolicitud>(entity =>
             {
                 entity.HasKey(e => e.IdEstadoSolicitud)
@@ -167,6 +223,23 @@ namespace SistemaBase.Models
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasMany(d => d.GruposUsuarios)
+                    .WithMany(p => p.EstadoSolicituds)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "GruposEstadosSolicitud",
+                        l => l.HasOne<GruposUsuario>().WithMany().HasForeignKey("IdGrupo").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_GES_GRUPO"),
+                        r => r.HasOne<EstadoSolicitud>().WithMany().HasForeignKey("IdEstadoSolicitud").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_GES_ESTADO_SOLICITUD"),
+                        j =>
+                        {
+                            j.HasKey("IdGrupo", "IdEstadoSolicitud");
+
+                            j.ToTable("GRUPOS_ESTADOS_SOLICITUD");
+
+                            j.IndexerProperty<string>("IdGrupo").HasMaxLength(6).IsUnicode(false);
+
+                            j.IndexerProperty<int>("IdEstadoSolicitud");
+                        });
             });
 
             modelBuilder.Entity<Forma>(entity =>
@@ -196,6 +269,30 @@ namespace SistemaBase.Models
                     .HasConstraintName("FK_FORMAS_MODULOS");
             });
 
+            modelBuilder.Entity<Facultad>(entity =>
+            {
+                entity.HasKey(e => e.IdFacultad)
+                    .HasName("PK_FACULTAD");
+
+                entity.ToTable("FACULTAD");
+
+                entity.HasIndex(e => e.Codigo, "UQ_FACULTAD_CODIGO")
+                    .IsUnique();
+
+                entity.Property(e => e.Activo)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<GruposUsuario>(entity =>
             {
                 entity.HasKey(e => e.IdGrupo)
@@ -211,6 +308,11 @@ namespace SistemaBase.Models
                     .HasMaxLength(40)
                     .IsUnicode(false)
                     .HasColumnName("DESCRIPCION");
+
+                entity.HasOne(d => d.IdFacultadNavigation)
+                    .WithMany(p => p.GruposUsuarios)
+                    .HasForeignKey(d => d.IdFacultad)
+                    .HasConstraintName("FK_GRUPOS_USUARIOS_FACULTAD");
 
                 entity.HasMany(d => d.Formas)
                     .WithMany(p => p.IdGrupos)
@@ -396,6 +498,12 @@ namespace SistemaBase.Models
                     .IsUnicode(false)
                     .IsFixedLength();
 
+                entity.Property(e => e.ArchivoContenido).HasColumnName("ArchivoContenido");
+
+                entity.Property(e => e.ContentType)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Extension)
                     .HasMaxLength(10)
                     .IsUnicode(false);
@@ -457,6 +565,8 @@ namespace SistemaBase.Models
 
                 entity.Property(e => e.FechaEnvioDecano).HasColumnType("datetime");
 
+                entity.Property(e => e.FechaPresentacion).HasColumnType("datetime");
+
                 entity.Property(e => e.FechaRespuestaDecano).HasColumnType("datetime");   
 
                 entity.Property(e => e.FechaSolicitud)
@@ -511,6 +621,34 @@ namespace SistemaBase.Models
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TipoExtension>(entity =>
+            {
+                entity.HasKey(e => e.IdTipoExtension)
+                    .HasName("PK_TIPO_EXTENSION");
+
+                entity.ToTable("TIPO_EXTENSION");
+
+                entity.HasIndex(e => e.Extension, "UQ_TIPO_EXTENSION_EXTENSION")
+                    .IsUnique();
+
+                entity.Property(e => e.Activo)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Extension)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MimeType)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
             });
 

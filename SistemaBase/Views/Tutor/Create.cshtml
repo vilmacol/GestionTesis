@@ -1,0 +1,25 @@
+@model SistemaBase.Models.Tutor
+
+@{
+    ViewData["Title"] = "Nuevo tutor";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Nuevo tutor</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="NombreCompleto">Nombre completo</label><input class="form-control" asp-for="NombreCompleto" maxlength="150" required /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Correo">Correo</label><input class="form-control" asp-for="Correo" maxlength="120" /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Telefono">Telefono</label><input class="form-control" asp-for="Telefono" maxlength="30" /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Especialidad">Especialidad</label><input class="form-control" asp-for="Especialidad" maxlength="150" /></div>
+        <input type="hidden" asp-for="Activo" />
+        <input type="hidden" asp-for="FechaRegistro" />
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

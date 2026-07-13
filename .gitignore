@@ -5,6 +5,8 @@
 .DS_Store
 node_modules/
 /dist/
+/SistemaBase/wwwroot/uploads/
+/SistemaBase/wwwroot/descargas/documentos/
 
 # local env files
 .env.local

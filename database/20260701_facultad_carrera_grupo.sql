@@ -1,0 +1,78 @@
+IF OBJECT_ID('dbo.FACULTAD', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.FACULTAD
+    (
+        IdFacultad INT IDENTITY(1,1) NOT NULL,
+        Codigo VARCHAR(20) NOT NULL,
+        Nombre VARCHAR(150) NOT NULL,
+        Activo CHAR(1) NULL CONSTRAINT DF_FACULTAD_ACTIVO DEFAULT ('S'),
+        CONSTRAINT PK_FACULTAD PRIMARY KEY (IdFacultad),
+        CONSTRAINT UQ_FACULTAD_CODIGO UNIQUE (Codigo)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.FACULTAD WHERE Codigo = 'FACIT')
+BEGIN
+    INSERT INTO dbo.FACULTAD (Codigo, Nombre, Activo)
+    VALUES ('FACIT', 'Facultad de Ciencias de la Informacion y Tecnologia', 'S');
+END;
+
+IF NOT EXISTS (SELECT 1 FROM dbo.FACULTAD WHERE Codigo = 'FACEN')
+BEGIN
+    INSERT INTO dbo.FACULTAD (Codigo, Nombre, Activo)
+    VALUES ('FACEN', 'Facultad de Ciencias Sociales', 'S');
+END;
+
+IF COL_LENGTH('dbo.CARRERA', 'IdFacultad') IS NULL
+BEGIN
+    ALTER TABLE dbo.CARRERA
+    ADD IdFacultad INT NULL;
+END;
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.foreign_keys
+    WHERE name = 'FK_CARRERA_FACULTAD'
+)
+BEGIN
+    ALTER TABLE dbo.CARRERA
+    ADD CONSTRAINT FK_CARRERA_FACULTAD
+        FOREIGN KEY (IdFacultad) REFERENCES dbo.FACULTAD(IdFacultad);
+END;
+
+IF COL_LENGTH('dbo.GRUPOS_USUARIOS', 'IdFacultad') IS NULL
+BEGIN
+    ALTER TABLE dbo.GRUPOS_USUARIOS
+    ADD IdFacultad INT NULL;
+END;
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.foreign_keys
+    WHERE name = 'FK_GRUPOS_USUARIOS_FACULTAD'
+)
+BEGIN
+    ALTER TABLE dbo.GRUPOS_USUARIOS
+    ADD CONSTRAINT FK_GRUPOS_USUARIOS_FACULTAD
+        FOREIGN KEY (IdFacultad) REFERENCES dbo.FACULTAD(IdFacultad);
+END;
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM dbo.MODULOS
+    WHERE IdModulo = '01'
+)
+BEGIN
+    INSERT INTO dbo.MODULOS (IdModulo, DESCRIPCION)
+    VALUES ('01', 'Sistema');
+END;
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM dbo.FORMAS
+    WHERE IdModulo = '01' AND NOM_FORMA = 'FACULTAD'
+)
+BEGIN
+    INSERT INTO dbo.FORMAS (IdModulo, NOM_FORMA, DESCRIPCION)
+    VALUES ('01', 'FACULTAD', 'Facultades');
+END;

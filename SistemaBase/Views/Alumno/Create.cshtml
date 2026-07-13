@@ -1,0 +1,67 @@
+@model SistemaBase.Models.Alumno
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Nuevo alumno</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="NroDocumento" class="form-label fw-semibold">Documento / CI</label>
+                <input asp-for="NroDocumento" class="form-control" maxlength="20" required />
+                <span asp-validation-for="NroDocumento" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="RegistroAcademico" class="form-label fw-semibold">Registro academico</label>
+                <input asp-for="RegistroAcademico" class="form-control" maxlength="30" required />
+                <span asp-validation-for="RegistroAcademico" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Nombres" class="form-label fw-semibold">Nombres</label>
+                <input asp-for="Nombres" class="form-control" maxlength="100" required />
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Apellidos" class="form-label fw-semibold">Apellidos</label>
+                <input asp-for="Apellidos" class="form-control" maxlength="100" required />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="IdCarrera" class="form-label fw-semibold">Carrera</label>
+                <select asp-for="IdCarrera" class="form-select" asp-items="ViewBag.IdCarrera" required>
+                    <option value="">Seleccione...</option>
+                </select>
+                <span asp-validation-for="IdCarrera" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Activo" class="form-label fw-semibold">Activo</label>
+                <select asp-for="Activo" class="form-select">
+                    <option value="S">Si</option>
+                    <option value="N">No</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Correo" class="form-label fw-semibold">Correo</label>
+                <input asp-for="Correo" class="form-control" maxlength="120" type="email" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Telefono" class="form-label fw-semibold">Telefono</label>
+                <input asp-for="Telefono" class="form-control" maxlength="30" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="FechaRegistro" />
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

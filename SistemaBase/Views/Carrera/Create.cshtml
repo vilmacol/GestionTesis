@@ -1,0 +1,38 @@
+@model SistemaBase.Models.Carrera
+
+@{
+    ViewData["Title"] = "Nueva carrera";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Nueva carrera</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="Descripcion">Descripcion</label>
+            <input class="form-control" asp-for="Descripcion" maxlength="255" required />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdFacultad">Facultad</label>
+            <select class="form-select" asp-for="IdFacultad" asp-items="ViewBag.IdFacultad">
+                <option value="">Seleccione</option>
+            </select>
+            <span asp-validation-for="IdFacultad" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold" asp-for="IdEstadoInicialTesis">Estado inicial tesis</label>
+            <select class="form-select" asp-for="IdEstadoInicialTesis" asp-items="ViewBag.IdEstadoInicialTesis">
+                <option value="">Seleccione</option>
+            </select>
+            <span asp-validation-for="IdEstadoInicialTesis" class="text-danger"></span>
+        </div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

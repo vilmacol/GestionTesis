@@ -1,0 +1,26 @@
+@model SistemaBase.Models.Tutor
+
+@{
+    ViewData["Title"] = "Editar tutor";
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Editar tutor</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Edit" asp-route-id="@Model.IdTutor" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdTutor" />
+        <input type="hidden" asp-for="FechaRegistro" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="NombreCompleto">Nombre completo</label><input class="form-control" asp-for="NombreCompleto" maxlength="150" required /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Correo">Correo</label><input class="form-control" asp-for="Correo" maxlength="120" /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Telefono">Telefono</label><input class="form-control" asp-for="Telefono" maxlength="30" /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Especialidad">Especialidad</label><input class="form-control" asp-for="Especialidad" maxlength="150" /></div>
+        <div class="mb-3"><label class="form-label fw-semibold" asp-for="Activo">Activo</label><select class="form-select" asp-for="Activo"><option value="S">S</option><option value="N">N</option></select></div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>

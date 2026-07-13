@@ -1,0 +1,39 @@
+@model SistemaBase.Models.TipoExtension
+
+@{
+    Layout = "";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">Editar extension</h5>
+    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+</div>
+<div class="modal-body">
+    <form asp-action="Edit" asp-route-id="@Model.IdTipoExtension" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdTipoExtension" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="Extension" class="form-label fw-semibold">Extension</label>
+            <input asp-for="Extension" class="form-control" maxlength="10" required />
+            <span asp-validation-for="Extension" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label fw-semibold">Descripcion</label>
+            <input asp-for="Descripcion" class="form-control" maxlength="100" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="MimeType" class="form-label fw-semibold">Mime Type</label>
+            <input asp-for="MimeType" class="form-control" maxlength="150" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Activo" class="form-label fw-semibold">Activo</label>
+            <select asp-for="Activo" class="form-select">
+                <option value="S">Si</option>
+                <option value="N">No</option>
+            </select>
+        </div>
+        <button class="btnAbm" type="submit"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btnAbmCancelar" type="button" data-bs-dismiss="modal">Cancelar</button>
+    </form>
+</div>
